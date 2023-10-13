@@ -9,15 +9,16 @@ interface MyFunctional {  ////// собственный аналог Predicate<I
 
 public class Homework {
     ////// метод складывает значения массива, диапазон которых ограничивается двумя predicate
-    public static int sumAll(List<Integer> arr, MyFunctional predicate1, MyFunctional predicate2){
+    public static int sumAll(List<Integer> arr, MyFunctional predicate1, MyFunctional predicate2) {
         int sum = 0;
-        for (int num:arr) {
-            if (predicate1.test(num) && predicate2.test(num)){
-                sum+=num;
+        for (int num : arr) {
+            if (predicate1.test(num) && predicate2.test(num)) {
+                sum += num;
             }
         }
         return sum;
     }
+
     public static void main(String[] args) {
         List<Integer> arr = new ArrayList<>();
         System.out.print("Контрольный вывод массива: ");
