@@ -10,6 +10,6 @@ public class Main {
         dictionary.input("en-ru", "hand", "рука");
         dictionary.input("en-ru", "land", "земля");
 //        dictionary.printDictionary();
-
+        dictionary.output("en-ru", "time");
     }
 }

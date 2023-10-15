@@ -15,8 +15,8 @@ public class Dictionary {
         dictionary.get(lang).put(original, translation);
     }
 
+    public void output(String lang, String original) {
+        System.out.println("Перевод слова \'" + original + "\': " + dictionary.get(lang).get(original));
+    }
 
-//    public void printDictionary() {
-//        System.out.println(dictionary.get("en-ru"));
-//    }
 }
