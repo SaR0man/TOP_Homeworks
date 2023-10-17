@@ -80,8 +80,8 @@ public class Library {
 
     //// Перегруженный метод addCard добавляет словарную карточку, если значений перевода несколько
     public boolean addCard(String dictionary, String original, List<String> translation) {  // передается название словаря, оригинальное слово и коллекция слов-переводов
-        original = original.toLowerCase();
         dictionary = dictionary.toLowerCase();
+        original = original.toLowerCase();
         translation = toLowerCase(translation);  // с помощью метода toLowerCase(List<String> list) приводим записи коллекции к нижнему регистру
         if (library.containsKey(dictionary)) {  // если библиотека уже содержит такой словарь...
             if (library.get(dictionary).containsKey(original)) {  // ... и если словарь уже содержит такое оригинальное слово
@@ -122,5 +122,17 @@ public class Library {
                 System.out.println();
             }
         }
+    }
+
+    //// TODO ДЗ: Метод удаляет словарную карточку
+    public boolean removeCard(String dictionary, String original) {
+        dictionary = dictionary.toLowerCase();
+        original = original.toLowerCase();
+        if (library.containsKey(dictionary)) {  // если переданный словарь имеется в библиотеке...
+            if (library.get(dictionary).containsKey(original)) {  // ... и если словарь содержит такое оригинальное слово...
+                library.get(dictionary).remove(original);  // ... то удаляем его
+                return true;
+            }
+        } else return false;
     }
 }
