@@ -9,7 +9,7 @@ public class Library {
     ////// --= Поле класса =--
     private Map<String, Map<String, List<String>>> library;  // library - библиотека словарей в формате словаря Map
 
-    ////// --= Блок инизиализации =--
+    ////// --= Блок инициализации =--
     /*
     Создает новый объект TreeMap и сохраняет его в переменной this.library.
     TreeMap - это реализация интерфейса Map, который представляет собой структуру данных, позволяющую хранить пары ключ-значение.
@@ -20,6 +20,7 @@ public class Library {
     }
 
     ////// --= Методы класса =--
+
     //// Метод для добавления словаря
     public boolean addDict(String dictionary) {  // возвращает true или false, принимает наименование словаря
         dictionary = dictionary.toLowerCase();  // приводим переданное наименование к нижнему регистру
@@ -45,23 +46,22 @@ public class Library {
         original = original.toLowerCase();
         dictionary = dictionary.toLowerCase();
         translation = translation.toLowerCase();
-        if (library.containsKey(dictionary)) {  // если библиотека содержит переданный словарь
-            if (library.get(dictionary).containsKey(original)) {  //
-                if (library.get(dictionary).get(original).contains(translation)) {
+        if (library.containsKey(dictionary)) {  // если библиотека содержит переданный словарь...
+            if (library.get(dictionary).containsKey(original)) {  // ... и если словарь содержит такой ключ...
+                if (library.get(dictionary).get(original).contains(translation)) {  // ... и содержит такой перевод
                     return false;
-                } else {
+                } else {  // если такого translation переданного original нет, то заносим значение
                     library.get(dictionary).get(original).add(translation);
                     return true;
                 }
-            } else {
-                ArrayList<String> list = new ArrayList<String>();
+            } else {  // если словарь не содержит такой ключ (словарную карточку)...
+                ArrayList<String> list = new ArrayList<String>();  // ... создаем
                 list.add(translation);
                 library.get(dictionary).put(original, list);
                 return true;
             }
         } else {  // если библиотека НЕ содержит переданный словарь
             if (addDict(dictionary)) {  // если метод addDict(dictionary) вернул true
-//                boolean isadd =
                 return addCard(dictionary, original, translation);  // обращаемся к методу добавления словарной карточки и возвращаем результат операции
             } else {  // если метод addDict(dictionary) вернул false
                 return false;
@@ -78,8 +78,8 @@ public class Library {
         return listArr;
     }
 
-    ////
-    public boolean addCard(String dictionary, String original, List<String> translation) {
+    //// Перегруженный метод addCard добавляет словарную карточку, если значений перевода несколько
+    public boolean addCard(String dictionary, String original, List<String> translation) {  // передается название словаря, оригинальное слово и коллекция слов-переводов
         original = original.toLowerCase();
         dictionary = dictionary.toLowerCase();
         translation = toLowerCase(translation);  // с помощью метода toLowerCase(List<String> list) приводим записи коллекции к нижнему регистру
@@ -91,8 +91,8 @@ public class Library {
                 return true;
             }
         } else {  // если библиотека еще не содержит такой словарь
-            if (addDict(dictionary))  //  добавить такой словарь, и если true...
-                return addCard(dictionary, original, translation);  // ... добавить словарную карточку и вернуть успех или неуспех этой операции
+            if (addDict(dictionary))  //  добавить такой словарь методом addDict, и если true...
+                return addCard(dictionary, original, translation);  // ... добавить словарную карточку методом addCard и вернуть успех или неуспех этой операции
             else return false;
         }
     }
@@ -107,16 +107,17 @@ public class Library {
         }
     }
 
-    //// Метод выводит содержание переданного словаря
-    public void printCards(String key) {
+    //// Метод выводит содержимое переданного словаря
+    public void printCards() {
         int count = 1;
-        for (String newKey : library.keySet()) {
+        System.out.println();
+        for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
             System.out.println("-------------------------");
-            System.out.println("Содержимое словаря " + newKey + ":");
-            for (String word : library.get(newKey).keySet()) {
-                System.out.print(word + " - ");
-                for (String tr : library.get(newKey).get(word)) {
-                    System.out.print(tr + ", ");
+            System.out.println(count++ + ") Содержимое словаря " + newKey + ":");
+            for (String original : library.get(newKey).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
+                System.out.print(original + " - ");
+                for (String translation : library.get(newKey).get(original)) {  // перебор всех слов-переводов в коллекциях original
+                    System.out.print(translation + ", ");
                 }
                 System.out.println();
             }
