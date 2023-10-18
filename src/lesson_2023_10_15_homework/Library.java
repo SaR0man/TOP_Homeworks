@@ -107,8 +107,8 @@ public class Library {
         }
     }
 
-    //// Метод выводит содержимое переданного словаря
-    public void printCards() {
+    //// Метод выводит содержимое всех имеющихся словарей
+    public void printDict() {
         int count = 1;
         System.out.println();
         for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
@@ -116,13 +116,35 @@ public class Library {
             System.out.println(count++ + ") Содержимое словаря " + newKey + ":");
             for (String original : library.get(newKey).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
                 System.out.print(original + " - ");
-                for (String translation : library.get(newKey).get(original)) {  // перебор всех слов-переводов в коллекциях original
-                    System.out.print(translation + ", ");
+                List<String> get = library.get(newKey).get(original);
+                for (int i = 0; i < get.size(); i++) {
+                    String translation = get.get(i);  // перебор всех слов-переводов в коллекциях original
+                    System.out.print(translation);
+                    if (i < get.size() - 1) System.out.print(", ");  // запятые ставим там, где они нужны
                 }
                 System.out.println();
             }
         }
     }
+
+    //// TODO ДЗ: метод выводит содержимое конкретного словаря
+    public void printCards(String dictionary) {
+        dictionary = dictionary.toLowerCase();
+        System.out.println("-------------------------");
+        System.out.println("Содержимое словаря " + dictionary + ":");
+        int count = 1;
+        for (String original : library.get(dictionary).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
+            System.out.print(count++ + ") " + original + " - ");
+            List<String> get = library.get(dictionary).get(original);
+            for (int i = 0; i < get.size(); i++) {
+                String translation = get.get(i);  // перебор всех слов-переводов в коллекциях original
+                System.out.print(translation);
+                if (i < get.size() - 1) System.out.print(", ");  // запятые ставим там, где они нужны
+            }
+            System.out.println();
+        }
+    }
+
 
     //// TODO ДЗ: Метод удаляет словарную карточку
     public boolean removeCard(String dictionary, String original) {
@@ -133,6 +155,50 @@ public class Library {
                 library.get(dictionary).remove(original);  // ... то удаляем его
                 return true;
             }
-        } else return false;
+        }
+        return false;
+    }
+
+    //// TODO ДЗ: Метод удаляет слово-перевод
+    public boolean removeTrans(String dictionary, String original, String translation) {
+        original = original.toLowerCase();
+        dictionary = dictionary.toLowerCase();
+        translation = translation.toLowerCase();
+        if (library.containsKey(dictionary)) {  // если библиотека содержит переданный словарь...
+            if (library.get(dictionary).containsKey(original)) {  // ... и если словарь содержит такой ключ...
+                if (library.get(dictionary).get(original).contains(translation)) {  // ... и содержит такой перевод
+                    int size = library.get(dictionary).get(original).size();
+//                    System.out.println("Слов-переводов в слове \'" + translation + "\': " + size);
+                    if (size < 2) {  // если слово-перевод только одно...
+                        library.get(dictionary).remove(original);  // ... удаляем словарную карточку полностью
+                    } else {
+                        library.get(dictionary).get(original).remove(translation);  // иначе удаляем только слово-перевод
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //// TODO ДЗ: Метод выводит все словарные карточки указанного словаря, начинающиеся на переданный образец
+    public void printContains(String dictionary, String sample) {
+        dictionary = dictionary.toLowerCase();
+        sample = dictionary.toLowerCase();
+
+        for (String string : library.get(dictionary).keySet()) {
+            System.out.println(string);
+
+            if (string.startsWith(sample)) {
+                System.out.print(string + " - ");
+//                List<String> get = library.get(dictionary).get(original);
+//                for (int i = 0; i < get.size(); i++) {
+//                    String translation = get.get(i);  // перебор всех слов-переводов в коллекциях original
+//                    System.out.print(translation);
+//                    if (i < get.size() - 1) System.out.print(", ");  // запятые ставим там, где они нужны
+//                }
+                System.out.println();
+            }
+        }
     }
 }
