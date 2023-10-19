@@ -36,10 +36,13 @@ public class Main {
         library.addCard("ru-en", "голова", "*** ошибочная запись ***");  // для теста вводим словарную карточку с некорректным переводом
         library.addCard("ru-en", "дом","*** ошибочная запись ***");  // добавляем некорректное слово-перевод в коллекцию слов-переводов
         library.printCards("ru-en");
-        System.out.println(library.removeTrans("ru-en", "голова", "*** ошибочная запись ***"));
+        System.out.println(library.removeTrans("ru-en", "голова", "*** ошибочная запись ***"));  // удаляем некорректное слово-перевод из словарной карточки с одним переводом
         library.printCards("ru-en");
-        System.out.println(library.removeTrans("ru-en", "дом","*** ошибочная запись ***"));
+        System.out.println(library.removeTrans("ru-en", "дом","*** ошибочная запись ***"));  // удаляем некорректное слово-перевод из словарной карточки с несколькими переводами
         library.printCards("ru-en");
-        library.printContains("en-ru", "ha");
+        System.out.println("=========================");
+        library.printContains("en-ru", "h");
+        System.out.println("=========================");
+        library.train();
     }
 }

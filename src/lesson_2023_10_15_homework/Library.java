@@ -1,13 +1,11 @@
 package lesson_2023_10_15_homework;
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Library {
     ////// --= Поле класса =--
     private Map<String, Map<String, List<String>>> library;  // library - библиотека словарей в формате словаря Map
+    private List<String> all;  // коллекция для всех слов-переводов в библиотеке
 
     ////// --= Блок инициализации =--
     /*
@@ -15,8 +13,10 @@ public class Library {
     TreeMap - это реализация интерфейса Map, который представляет собой структуру данных, позволяющую хранить пары ключ-значение.
     Значок < > после TreeMap указывает, что этот TreeMap будет использовать универсальные типы (generics), что позволяет ему работать с различными типами ключей и значений.
     В данном случае мы используем TreeMap, потому что он обеспечивает эффективное хранение и извлечение элементов на основе их порядка сортировки.
-     */ {
+     */
+    {
         this.library = new TreeMap<>();
+        this.all = new ArrayList<>();
     }
 
     ////// --= Методы класса =--
@@ -184,20 +184,59 @@ public class Library {
     //// TODO ДЗ: Метод выводит все словарные карточки указанного словаря, начинающиеся на переданный образец
     public void printContains(String dictionary, String sample) {
         dictionary = dictionary.toLowerCase();
-        sample = dictionary.toLowerCase();
-
-        for (String string : library.get(dictionary).keySet()) {
-            System.out.println(string);
-
-            if (string.startsWith(sample)) {
-                System.out.print(string + " - ");
-//                List<String> get = library.get(dictionary).get(original);
-//                for (int i = 0; i < get.size(); i++) {
-//                    String translation = get.get(i);  // перебор всех слов-переводов в коллекциях original
-//                    System.out.print(translation);
-//                    if (i < get.size() - 1) System.out.print(", ");  // запятые ставим там, где они нужны
-//                }
+        sample = sample.toLowerCase();
+        System.out.println("Словарные карточки словаря " + dictionary + ", начинающиеся с " + sample + ":");
+        for (String original : library.get(dictionary).keySet()) {
+            if (original.startsWith(sample)) {
+                System.out.print(original + " - ");
+                List<String> get = library.get(dictionary).get(original);
+                for (int i = 0; i < get.size(); i++) {
+                    String translation = get.get(i);  // перебор всех слов-переводов в коллекциях original
+                    System.out.print(translation);
+                    if (i < get.size() - 1) System.out.print(", ");  // запятые ставим там, где они нужны
+                }
                 System.out.println();
+            }
+        }
+    }
+
+//    //// TODO ДЗ: приватный (служебный) метод, помещающий все слова-переводы в перемешанный список
+//    private void collector() {
+//        for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
+//            for (String original : library.get(newKey).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
+//                all.addAll(library.get(newKey).get(original));  // помещаем все слова-переводы в коллекцию all
+//            }
+//        }
+//    }
+
+    //// TODO ДЗ: метод-тренажер
+    public void train() {
+        for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
+            for (String original : library.get(newKey).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
+                all.addAll(library.get(newKey).get(original));  // помещаем все слова-переводы в коллекцию all
+            }
+        }
+        System.out.println("Вводите перевод каждого слова, или нажмите 1 для выхода.");
+        Collections.shuffle(all);
+//        System.out.println(all);
+        boolean switcher = true;
+        while (switcher) {
+            System.out.println("switcher is " + switcher);
+            if (switcher) {
+                for (String test : all) {
+                    System.out.print(test + "...");
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.println("\nзашли в while");
+                    String input = scanner.nextLine();
+//                    System.out.println("введено: " + (input + 1));
+                    if (input.equals("1")) {
+                        System.out.println("switcher = false");
+                        switcher = false;
+                        break;
+                    } else if (!input.equalsIgnoreCase(test)) {
+                        System.out.println("Неверно!");
+                    }
+                }
             }
         }
     }
