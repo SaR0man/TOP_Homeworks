@@ -31,7 +31,7 @@ public class Library {
     }
 
     //// Метод для удаления словаря
-    public boolean removeLang(String dictionary) {
+    public boolean removeDict(String dictionary) {
         dictionary = dictionary.toLowerCase();
         if (library.containsKey(dictionary)) {  // если в библиотеке есть такой словарь, то удалить
             library.remove(dictionary);
@@ -199,22 +199,11 @@ public class Library {
         }
     }
 
-//    //// TODO ДЗ: приватный (служебный) метод, помещающий все слова-переводы в перемешанный список
-//    private void collector() {
-//        for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
-//            for (String original : library.get(newKey).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
-//                all.addAll(library.get(newKey).get(original));  // помещаем все слова-переводы в коллекцию all
-//            }
-//        }
-//    }
-
     //// TODO ДЗ: метод-тренажер
     public void train() {
         for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
             for (String original : library.get(newKey).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
-//                all.addAll(library.get(newKey).get(original));  // помещаем все слова-переводы в коллекцию all
                 for (String translation : library.get(newKey).get(original)) {
-//                    catalog.put(translation, original);
                     wordTrans.add(translation);
                     wordOrigin.add(original);
                 }

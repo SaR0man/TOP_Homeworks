@@ -8,7 +8,7 @@ public class Main {
         System.out.println("Добавляем словарь \'en-ru\': " + library.addDict("en-ru"));  // добавляем англо-русский словарь
         System.out.println("Добавляем словарь \'En-Ru\': " + library.addDict("En-Ru"));  // для проверки добавляем словарь-дубликат
         System.out.println("Добавляем словарь \'ru-ru\': " + library.addDict("ru-ru"));  // добавляем бесполезный словарь :-)
-        System.out.println("Удаляем словарь \'ru-ru\': " + library.removeLang("ru-ru"));  // удаляем бесполезный словарь
+        System.out.println("Удаляем словарь \'ru-ru\': " + library.removeDict("ru-ru"));  // удаляем бесполезный словарь
         System.out.println("=========================");
         System.out.println("В словарь \'en-ru\' добавляем словарную карточку \'word\' - \'слово\': " + library.addCard("en-ru", "word", "слово"));
         System.out.println("В словарь \'en-ru\' добавляем словарную карточку \'Word\' - \'слово\': " + library.addCard("en-ru", "Word", "слово"));
