@@ -4,19 +4,18 @@ import java.util.*;
 
 public class Library {
     ////// --= Поле класса =--
-    private Map<String, Map<String, List<String>>> library;  // library - библиотека словарей в формате словаря Map
-    private List<String> all;  // коллекция для всех слов-переводов в библиотеке
+    private Map<String, Map<String, List<String>>> library;  // библиотека словарей в формате словаря Map
+    private List<Integer> numerator;  // коллекция для хранения перемешанных индексов для работы с wordTrans и wordOrigin
+    private List<String> wordTrans;  // коллекция всех слов-переводов всей библиотеки
+    private List<String> wordOrigin;  // коллекция оригинальных слов, соответствующих словам-переводам в wordTrans
 
     ////// --= Блок инициализации =--
-    /*
-    Создает новый объект TreeMap и сохраняет его в переменной this.library.
-    TreeMap - это реализация интерфейса Map, который представляет собой структуру данных, позволяющую хранить пары ключ-значение.
-    Значок < > после TreeMap указывает, что этот TreeMap будет использовать универсальные типы (generics), что позволяет ему работать с различными типами ключей и значений.
-    В данном случае мы используем TreeMap, потому что он обеспечивает эффективное хранение и извлечение элементов на основе их порядка сортировки.
-     */
     {
         this.library = new TreeMap<>();
-        this.all = new ArrayList<>();
+        this.numerator = new ArrayList<>();
+        this.wordTrans = new ArrayList<>();
+        this.wordOrigin = new ArrayList<>();
+
     }
 
     ////// --= Методы класса =--
@@ -110,7 +109,7 @@ public class Library {
     //// Метод выводит содержимое всех имеющихся словарей
     public void printDict() {
         int count = 1;
-        System.out.println();
+//        System.out.println();
         for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
             System.out.println("-------------------------");
             System.out.println(count++ + ") Содержимое словаря " + newKey + ":");
@@ -186,8 +185,8 @@ public class Library {
         dictionary = dictionary.toLowerCase();
         sample = sample.toLowerCase();
         System.out.println("Словарные карточки словаря " + dictionary + ", начинающиеся с " + sample + ":");
-        for (String original : library.get(dictionary).keySet()) {
-            if (original.startsWith(sample)) {
+        for (String original : library.get(dictionary).keySet()) {  // перебор всех слов-ключей переданного словаря
+            if (original.startsWith(sample)) {  // если слово-ключ начинается с образца...
                 System.out.print(original + " - ");
                 List<String> get = library.get(dictionary).get(original);
                 for (int i = 0; i < get.size(); i++) {
@@ -213,30 +212,38 @@ public class Library {
     public void train() {
         for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
             for (String original : library.get(newKey).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
-                all.addAll(library.get(newKey).get(original));  // помещаем все слова-переводы в коллекцию all
+//                all.addAll(library.get(newKey).get(original));  // помещаем все слова-переводы в коллекцию all
+                for (String translation : library.get(newKey).get(original)) {
+//                    catalog.put(translation, original);
+                    wordTrans.add(translation);
+                    wordOrigin.add(original);
+                }
             }
         }
+//        System.out.println(wordTrans);
+//        System.out.println(wordOrigin);
+        int size = wordTrans.size();
+        for (int i = 0; i < size; i++) {
+            numerator.add(i);
+        }
+        Collections.shuffle(numerator);
+//        System.out.println(numerator);
+
+
         System.out.println("Вводите перевод каждого слова, или нажмите 1 для выхода.");
-        Collections.shuffle(all);
-//        System.out.println(all);
         boolean switcher = true;
         while (switcher) {
-            System.out.println("switcher is " + switcher);
-            if (switcher) {
-                for (String test : all) {
-                    System.out.print(test + "...");
-                    Scanner scanner = new Scanner(System.in);
-                    System.out.println("\nзашли в while");
-                    String input = scanner.nextLine();
-//                    System.out.println("введено: " + (input + 1));
-                    if (input.equals("1")) {
-                        System.out.println("switcher = false");
-                        switcher = false;
-                        break;
-                    } else if (!input.equalsIgnoreCase(test)) {
-                        System.out.println("Неверно!");
-                    }
-                }
+            for (int i : numerator) {
+                System.out.print(wordTrans.get(i) + " = ");
+                Scanner scanner = new Scanner(System.in);
+                String input = scanner.nextLine();
+                if (input.equals("1")) {
+                    System.out.println("Работа тренажера завершена.");
+                    switcher = false;
+                    break;
+                } else if (input.equalsIgnoreCase(wordOrigin.get(i))) System.out.println("Верно!");
+                else System.out.println("Неверно!");
+//                if (!switcher) break;
             }
         }
     }
