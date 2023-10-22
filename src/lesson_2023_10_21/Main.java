@@ -1,6 +1,7 @@
 package lesson_2023_10_21;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -57,5 +58,10 @@ public class Main {
         tempTrans.add("малыш");
         library.addCard("en-ru", "child", tempTrans);
         library.printCards("en-ru");
+        library.printAllDicts();
+        Scanner scanner = new Scanner(System.in);
+        int index = scanner.nextInt();
+        System.out.println(library.getDictByIndex(index));
+
     }
 }
