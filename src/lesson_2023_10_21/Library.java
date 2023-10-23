@@ -5,16 +5,16 @@ import java.util.*;
 public class Library {
     ////// --= Поле класса =--
     private Map<String, Map<String, List<String>>> library;  // библиотека словарей в формате словаря Map
-    private List<Integer> numerator;  // коллекция для хранения перемешанных индексов для работы с wordTrans и wordOrigin
-    private List<String> wordTrans;  // коллекция всех слов-переводов всей библиотеки
-    private List<String> wordOrigin;  // коллекция оригинальных слов, соответствующих словам-переводам в wordTrans
+//    private List<Integer> numerator;  // коллекция для хранения перемешанных индексов для работы с wordOrigin и wordTrans
+//    private List<String> wordTrans;  // коллекция всех слов-переводов всей библиотеки
+//    private List<String> wordOrigin;  // коллекция оригинальных слов, соответствующих словам-переводам в wordTrans
 
     ////// --= Блок инициализации =--
     {
         this.library = new TreeMap<>();
-        this.numerator = new ArrayList<>();
-        this.wordTrans = new ArrayList<>();
-        this.wordOrigin = new ArrayList<>();
+//        this.numerator = new ArrayList<>();
+//        this.wordTrans = new ArrayList<>();
+//        this.wordOrigin = new ArrayList<>();
 
     }
 
@@ -54,7 +54,7 @@ public class Library {
                     return true;
                 }
             } else {  // если словарь не содержит такой ключ (словарную карточку)...
-                ArrayList<String> list = new ArrayList<String>();  // ... создаем
+                ArrayList<String> list = new ArrayList<>();  // ... создаем
                 list.add(translation);
                 library.get(dictionary).put(original, list);
                 return true;
@@ -114,7 +114,6 @@ public class Library {
 
     //// Метод выводит имеющиеся словари
     public void printAllDicts() {
-        System.out.println("--------------------------");
         System.out.println("Имеются следующие словари:");
         int count = 1;
         for (String dictionary : library.keySet()) {  // простой перебор имеющихся ключей в библиотеке
@@ -127,7 +126,7 @@ public class Library {
         int count = 1;
 //        System.out.println();
         for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
-            System.out.println("-------------------------");
+//            System.out.println("-------------------------");
             System.out.println(count++ + ") Содержимое словаря " + newKey + ":");
             for (String original : library.get(newKey).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
                 System.out.print(original + " - ");
@@ -221,7 +220,7 @@ public class Library {
     //// Метод, возвращающий наименование словаря по индексу его расположения в библиотеке
     public String getDictByIndex(int index) {
         int count = 1;  // индекс словарей начинается с единицы
-        if (library.keySet().size() >= index && index > 0) {  // Проверяем, что введенный индекс не более количества словарей (т.е. размера библиотеки)
+        if (index <= library.keySet().size() && index > 0) {  // Проверяем, что введенный индекс не более количества словарей (т.е. размера библиотеки)
             for (String dictionary : library.keySet()) {
                 if (index == count) return dictionary;
                 count++;
@@ -230,11 +229,13 @@ public class Library {
         return null;
     }
 
-    //// Метод, создающий служебный словарь, состоящий из всех словарных карточек всех словарей
-    private Map<String, List<String>> serverMap() {
-        Map<String, List<String>> serverMap = new HashMap<>();
-        return serverMap;
-    }
+
+
+//    //// Метод, создающий служебный словарь, состоящий из всех словарных карточек всех словарей
+//    private Map<String, List<String>> serverMap() {
+//        Map<String, List<String>> serverMap = new HashMap<>();
+//        return serverMap;
+//    }
 
     //// Метод, возвращающий ключ из служебного словаря по переданному индексу
 
