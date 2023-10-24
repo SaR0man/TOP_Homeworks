@@ -218,7 +218,8 @@ public class Library {
     }
 
     //// Метод, возвращающий наименование словаря по индексу его расположения в библиотеке
-    public String getDictByIndex(int index) {
+    public String getDictByIndex(String strIndex) {
+        int index = Integer.parseInt(strIndex);
         int count = 1;  // индекс словарей начинается с единицы
         if (index <= library.keySet().size() && index > 0) {  // Проверяем, что введенный индекс не более количества словарей (т.е. размера библиотеки)
             for (String dictionary : library.keySet()) {

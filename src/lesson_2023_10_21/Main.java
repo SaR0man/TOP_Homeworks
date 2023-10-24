@@ -1,6 +1,7 @@
 package lesson_2023_10_21;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -23,24 +24,43 @@ public class Main {
             System.out.print(">_");
 
             action = scanner.nextLine();
+
             if (action.equals("1")) {
                 System.out.print("Введите направление словаря, например, \'en-ru\' >_");
-                String newDict = scanner.nextLine();
-                System.out.println(library.addDict(newDict));
+                String dictionary = scanner.nextLine();
+                System.out.println(library.addDict(dictionary));
                 continue;
             }
 
             if (action.equals("2")) {
                 library.printAllDicts();
                 System.out.print("Введите номер словаря, в который добавляем словарную карточку >_");
-                int choiceDict = scanner.nextInt();
+                String choiceDict = scanner.nextLine();
+                String lang = library.getDictByIndex(choiceDict);
                 System.out.print("Введите оригинальное слово >_");
-                scanner = new Scanner(System.in);
+//                scanner = new Scanner(System.in);
                 String newOriginWord = scanner.nextLine();
                 System.out.print("Введите слово-перевод >_");
                 String newTransWord = scanner.nextLine();
-                String lang = library.getDictByIndex(choiceDict);
                 System.out.println(library.addCard(lang, newOriginWord, newTransWord));
+                continue;
+            }
+
+            if (action.equals("3")) {
+                library.printAllDicts();
+                System.out.print("Введите номер словаря, в который добавляем словарную карточку >_");
+                String choiceDict = scanner.nextLine();
+                String lang = library.getDictByIndex(choiceDict);
+                System.out.print("Введите оригинальное слово >_");
+                String newOriginWord = scanner.nextLine();
+                List<String> translation = new ArrayList<>();
+                do {
+                    System.out.print("Введите новое слово-перевод, или цифру 0 для выхода >_");
+                    String transWord = scanner.nextLine();
+                    if (transWord.equals("0")) break;
+                    translation.add(transWord);
+                } while (true);
+                System.out.println(library.addCard(lang, newOriginWord, translation));
                 continue;
             }
 
@@ -53,7 +73,8 @@ public class Main {
                 library.printAllDicts();
                 System.out.print("Введите номер словаря для вывода его содержимого >_");
                 String choiceDict = scanner.nextLine();
-                library.printCards(choiceDict);
+                String lang = library.getDictByIndex(choiceDict);
+                library.printCards(lang);
                 continue;
             }
 
