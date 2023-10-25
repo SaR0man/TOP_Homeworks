@@ -199,7 +199,7 @@ public class Library {
     public void printContains(String dictionary, String sample) {
         dictionary = dictionary.toLowerCase();
         sample = sample.toLowerCase();
-        System.out.println("Словарные карточки словаря " + dictionary + ", начинающиеся с " + sample + ":");
+        System.out.println("Словарные карточки словаря \'" + dictionary + "\', начинающиеся с \'" + sample + "\':");
         int count = 0;
         for (String original : library.get(dictionary).keySet()) {  // перебор всех слов-ключей переданного словаря
             if (original.startsWith(sample)) {  // если слово-ключ начинается с образца...
@@ -219,7 +219,8 @@ public class Library {
 
     //// Метод, возвращающий наименование словаря по индексу его расположения в библиотеке
     public String getDictByIndex(String strIndex) {
-        int index = Integer.parseInt(strIndex);
+        int index = 0;
+        index = Integer.parseInt(strIndex);
         int count = 1;  // индекс словарей начинается с единицы
         if (index <= library.keySet().size() && index > 0) {  // Проверяем, что введенный индекс не более количества словарей (т.е. размера библиотеки)
             for (String dictionary : library.keySet()) {

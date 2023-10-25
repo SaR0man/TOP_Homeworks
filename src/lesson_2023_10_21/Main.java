@@ -38,7 +38,6 @@ public class Main {
                 String choiceDict = scanner.nextLine();
                 String lang = library.getDictByIndex(choiceDict);
                 System.out.print("Введите оригинальное слово >_");
-//                scanner = new Scanner(System.in);
                 String newOriginWord = scanner.nextLine();
                 System.out.print("Введите слово-перевод >_");
                 String newTransWord = scanner.nextLine();
@@ -75,6 +74,26 @@ public class Main {
                 String choiceDict = scanner.nextLine();
                 String lang = library.getDictByIndex(choiceDict);
                 library.printCards(lang);
+                continue;
+            }
+
+            if (action.equals("6")) {
+                library.printAllDicts();
+                System.out.print("Введите номер словаря который нужно удалить >_");
+                String choiceDict = scanner.nextLine();
+                String remove = library.getDictByIndex(choiceDict);
+                System.out.println(library.removeDict(remove));
+                continue;
+            }
+
+            if (action.equals("7")) {
+                library.printAllDicts();
+                System.out.print("Введите номер словаря, в котором искать слово >_");
+                String choiceDict = scanner.nextLine();
+                String findDict = library.getDictByIndex(choiceDict);
+                System.out.print("Введите первые буквы искомого слова >_");
+                String findSample = scanner.nextLine();
+                library.printContains(findDict, findSample);
                 continue;
             }
 
