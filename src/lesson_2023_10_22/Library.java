@@ -234,6 +234,24 @@ public class Library {
         return null;
     }
 
+    //// Метод, возвращающий наименование словаря по индексу его расположения в библиотеке
+    public String getDictByIndex(int index) {
+//        int index = 0;
+//        index = Integer.parseInt(strIndex);
+        int count = 1;  // индекс словарей начинается с единицы
+        if (index <= library.keySet().size() && index > 0) {  // Проверяем, что введенный индекс не более количества словарей (т.е. размера библиотеки)
+            for (String dictionary : library.keySet()) {
+                if (index == count) return dictionary;
+                count++;
+            }
+        }
+        return null;
+    }
+
+    //// TODO ДЗ: Метод поиска слов в словаре с символом-заменителем '_'
+    public void findUnderscore(int dictionary, String sample) {
+
+    }
 
 
 //    //// Метод, создающий служебный словарь, состоящий из всех словарных карточек всех словарей

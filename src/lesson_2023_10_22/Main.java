@@ -98,9 +98,29 @@ public class Main {
             }
 
             if (action.equals("8")) {
+                int choiceDict = 0;
+                boolean flag = true;
+                while (flag) {
+                    library.printAllDicts();
+                    System.out.print("Введите номер словаря, в котором искать слово >_");
+                    Scanner sc = new Scanner(System.in);
+                    if (!sc.hasNextInt()) {
+                        System.out.print("Будьте внимательнее! ");
+                        continue;
+                    }
+                    choiceDict = sc.nextInt();
+                    flag = false;
+                }
+                library.getDictByIndex(choiceDict);
+                System.out.print("Введите слово для поиска, используя маску \'_\' >_");
+                String findUnderscore = scanner.nextLine();
+                continue;
+            }
+
+            if (action.equals("9")) {
                 System.out.println("Program completed");
                 break;
-            } else System.out.println("Некорректный ввод. Вводите команду в диапазоне 1-8: ");
+            } else System.out.println("Некорректный ввод. Вводите команду в диапазоне 1-9: ");
 
 
         } while (true);
