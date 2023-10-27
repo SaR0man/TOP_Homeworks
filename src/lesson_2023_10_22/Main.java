@@ -10,7 +10,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String action;
         Library library = new Library();  // создаем собственно объект библиотеки
-
+        library.fillEnRu();
         do {
             System.out.println(".........................");
             System.out.println("1 Добавить словарь");
@@ -86,18 +86,39 @@ public class Main {
                 continue;
             }
 
-            if (action.equals("7")) {
-                library.printAllDicts();
-                System.out.print("Введите номер словаря, в котором искать слово >_");
-                String choiceDict = scanner.nextLine();
-                String findDict = library.getDictByIndex(choiceDict);
-                System.out.print("Введите первые буквы искомого слова >_");
-                String findSample = scanner.nextLine();
-                library.printContains(findDict, findSample);
-                continue;
-            }
+//            if (action.equals("7")) {
+//                library.printAllDicts();
+//                System.out.print("Введите номер словаря, в котором искать слово >_");
+//                String choiceDict = scanner.nextLine();
+//                String findDict = library.getDictByIndex(choiceDict);
+//                System.out.print("Введите первые буквы искомого слова >_");
+//                String findSample = scanner.nextLine();
+//                library.printContains(findDict, findSample);
+//                continue;
+//            }
 
-            if (action.equals("8")) {
+//            if (action.equals("7")) {
+//                int choiceDict = 0;
+//                boolean flag = true;
+//                while (flag) {
+//                    library.printAllDicts();
+//                    System.out.print("Введите номер словаря, в котором искать слово >_");
+//                    Scanner sc = new Scanner(System.in);
+//                    if (!sc.hasNextInt()) {
+//                        System.out.print("Будьте внимательнее! ");
+//                        continue;
+//                    }
+//                    choiceDict = sc.nextInt();
+//                    flag = false;
+//                }
+//                library.getDictByIndex(choiceDict);
+//                System.out.print("Введите слово для поиска, используя маску \'_\' >_");
+//                String findUnderscore = scanner.nextLine();
+//                library.findUnderscore(choiceDict, findUnderscore);
+//                continue;
+//            }
+
+            if (action.equals("7")) {
                 int choiceDict = 0;
                 boolean flag = true;
                 while (flag) {
@@ -112,16 +133,17 @@ public class Main {
                     flag = false;
                 }
                 library.getDictByIndex(choiceDict);
-                System.out.print("Введите слово для поиска, используя маску \'_\' >_");
-                String findUnderscore = scanner.nextLine();
+                System.out.print("Введите слово для поиска, используя маску \'*\' >_");
+                String findStar = scanner.nextLine();
+                library.findStar(choiceDict, findStar);
                 continue;
             }
 
-            if (action.equals("9")) {
+            if (action.equals("8")) {
                 System.out.println("Program completed");
                 break;
-            } else System.out.println("Некорректный ввод. Вводите команду в диапазоне 1-9: ");
-
+            }
+            else System.out.println("Некорректный ввод. Вводите команду в диапазоне 1-8: ");
 
         } while (true);
 

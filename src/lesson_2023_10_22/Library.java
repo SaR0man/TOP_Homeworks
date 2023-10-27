@@ -250,7 +250,64 @@ public class Library {
 
     //// TODO ДЗ: Метод поиска слов в словаре с символом-заменителем '_'
     public void findUnderscore(int dictionary, String sample) {
+        String dict = getDictByIndex(dictionary);
+        sample = sample.toLowerCase();
+        for (String word : library.get(dict).keySet()) {
+            if (word.length() == sample.length()) {
+                for (int i = 0, j = 0; i < word.length(); i++) {
+                    if (sample.charAt(i) == '_' || sample.charAt(j) == word.charAt(i)) {
+                        j++;
+                        if (i == word.length() - 1) System.out.println(word);
+                    } else break;
+                }
+            }
+        }
+    }
 
+    //// TODO ДЗ: Метод поиска слов в словаре с символом-заменителем '*'
+    public void findStar(int dictionary, String sample) {
+        String dict = getDictByIndex(dictionary);
+        sample = sample.toLowerCase();
+        for (String word : library.get(dict).keySet()) {
+            for (int i = 0, j = 0; i < sample.length();) {
+//                System.out.println("ищем по " + sample.charAt(i));
+                if (sample.charAt(i) == word.charAt(j)) {
+                    System.out.println(sample.charAt(i) + " из sample совпало с " + word.charAt(j) + " из word");
+                    i++;
+                    if (j < word.length() - 1) j++;
+                    else break;
+                    if (j == word.length() - 1) System.out.println(word);
+
+                }
+                else if (sample.charAt(i) == '*') {
+                    if (j < word.length() - 1) j++;
+                    else break;
+                    if (j == word.length() - 1) System.out.println(word);
+                } else break;
+            }
+        }
+    }
+
+    //// Служебный метод, заполняющий тренировочный словарь en-ru
+    public void fillEnRu() {
+        addDict("en-ru");
+        addCard("en-ru", "cat", "кошка");
+        addCard("en-ru", "coat", "пальто");
+        addCard("en-ru", "content", "содержание");
+        addCard("en-ru", "context", "контекст");
+        addCard("en-ru", "contact", "контакт");
+        addCard("en-ru", "concept", "понятие");
+        addCard("en-ru", "celebration", "празднование");
+        addCard("en-ru", "control", "управление");
+        addCard("en-ru", "car", "автомобиль");
+        addCard("en-ru", "computer", "компьютер");
+        addCard("en-ru", "dog", "собака");
+        addCard("en-ru", "table", "стол");
+        addCard("en-ru", "house", "дом");
+        addCard("en-ru", "book", "книга");
+        addCard("en-ru", "phone", "телефон");
+        addCard("en-ru", "apple", "яблоко");
+        addCard("en-ru", "orange", "апельсин");
     }
 
 
