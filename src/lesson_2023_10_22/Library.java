@@ -1,9 +1,6 @@
 package lesson_2023_10_22;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Library {
     ////// --= Поле класса =--
@@ -268,24 +265,48 @@ public class Library {
     public void findStar(int dictionary, String sample) {
         String dict = getDictByIndex(dictionary);
         sample = sample.toLowerCase();
-        for (String word : library.get(dict).keySet()) {
-            for (int i = 0, j = 0; i < sample.length();) {
-//                System.out.println("ищем по " + sample.charAt(i));
-                if (sample.charAt(i) == word.charAt(j)) {
-                    System.out.println(sample.charAt(i) + " из sample совпало с " + word.charAt(j) + " из word");
-                    i++;
-                    if (j < word.length() - 1) j++;
-                    else break;
-                    if (j == word.length() - 1) System.out.println(word);
 
+        if (sample.contains("*")) {
+            System.out.println("символ '*' обнаружен!");
+            List<String> workList = new ArrayList<>();
+            String[] tempList = sample.split("[*]");
+            for (String s : tempList) {
+                workList.add(s);
+            }
+            workList.remove("");
+            int count = 1;
+            for (int i = 0; i < workList.size(); i++) {
+                System.out.println(count++ + ") " + workList.get(i));
+            }
+            System.out.println("_начинаем перебор словаря:");
+            for (String word : library.get(dict).keySet()) {
+                System.out.print("_берем слово " + word + ". ");
+                for (int i = 0; i < workList.size(); i++) {
+                    System.out.print("_содержит ли в нем " + workList.get(i) + "? ");
+                    System.out.println(word.indexOf(workList.get(i)));
+
+//                    if (word.contains(workList.get(i)) {
+//
+//                    }
                 }
-                else if (sample.charAt(i) == '*') {
-                    if (j < word.length() - 1) j++;
-                    else break;
-                    if (j == word.length() - 1) System.out.println(word);
-                } else break;
             }
         }
+//            for (int i = 0, j = 0; i < sample.length();) {
+////                System.out.println("ищем по " + sample.charAt(i));
+//                if (sample.charAt(i) == word.charAt(j)) {
+//                    System.out.println(sample.charAt(i) + " из sample совпало с " + word.charAt(j) + " из word");
+//                    i++;
+//                    if (j < word.length() - 1) j++;
+//                    else break;
+//                    if (j == word.length() - 1) System.out.println(word);
+//
+//                }
+//                else if (sample.charAt(i) == '*') {
+//                    if (j < word.length() - 1) j++;
+//                    else break;
+//                    if (j == word.length() - 1) System.out.println(word);
+//                } else break;
+//            }
     }
 
     //// Служебный метод, заполняющий тренировочный словарь en-ru

@@ -22,8 +22,7 @@ public class Main {
         try {
             File dir = new File(dirName);
             if (dir.isDirectory()) {
-//                File file = new File(dir.getAbsolutePath() + "/" + fileName + ".txt");  // рабочая строка
-                File file = new File(dir.getAbsolutePath(), fileName);  // у fileName не хватает расширения
+                File file = new File(dir.getAbsolutePath(), fileName + ".txt");  // не забываем подставить расширение файла!
                 if (file.isFile()) {
                     System.out.println("Файл удален? " + file.delete());
                 }
@@ -35,25 +34,13 @@ public class Main {
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-        //// рабочий вариант
-//        try {
-//            File dir = new File(dirName);
-//            File file = new File(dir.getAbsolutePath() + "/" + fileName + ".txt");
-//            if (file.exists())
-//                file.delete();
-//            if (dir.exists())
-//                dir.delete();
-//        }
-//        catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
     }
 
     public static void main(String[] args) {
-        File workDir = new File("workdir");
+        File workDir = new File("workdir");  // папка workdir является полигоном для работы с файлами и директориями
         if (!workDir.exists())
             workDir.mkdir();
+
         File dirName = new File(workDir.getAbsolutePath() + "/dir_");
         File fileName = new File("file_");
         int count = 10;
@@ -61,7 +48,7 @@ public class Main {
         for (int i = 0; i < count; i++) {
             String index = "" + i;
 //            addDirAndFileInDir(dirName + index, fileName + index);
-            deleteDirAndFileInDir(dirName + index, fileName + index + ".txt");
+            deleteDirAndFileInDir(dirName + index, fileName + index);
         }
 
 //        try {
