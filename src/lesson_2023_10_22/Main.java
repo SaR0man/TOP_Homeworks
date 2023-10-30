@@ -135,7 +135,7 @@ public class Main {
                 library.getDictByIndex(choiceDict);
                 System.out.print("Введите слово для поиска, используя маску \'*\' >_");
                 String findStar = scanner.nextLine();
-                library.findStar(choiceDict, findStar);
+                library.findMask(choiceDict, findStar);
                 continue;
             }
 

@@ -245,52 +245,122 @@ public class Library {
         return null;
     }
 
-    //// TODO ДЗ: Метод поиска слов в словаре с символом-заменителем '_'
-    public void findUnderscore(int dictionary, String sample) {
+    //// TODO ДЗ: Метод, разводящий поиск по подметодам
+    public void findMask(int dictionary, String sample) {
         String dict = getDictByIndex(dictionary);
         sample = sample.toLowerCase();
+        /* если в маске нет звездочек */
+        if (!sample.contains("*"))
+            findUnderscore(dict, sample);
+        /* если в маске есть звездочки */
+        else
+            findStar(dict, sample);
+    }
+
+    //// TODO ДЗ: Метод поиска слов в словаре с символом-заменителем '_'
+    public void findUnderscore(String dict, String sample) {
+//        String dict = getDictByIndex(dictionary);
+//        sample = sample.toLowerCase();
+        int count = 0;
         for (String word : library.get(dict).keySet()) {
             if (word.length() == sample.length()) {
                 for (int i = 0, j = 0; i < word.length(); i++) {
                     if (sample.charAt(i) == '_' || sample.charAt(j) == word.charAt(i)) {
                         j++;
-                        if (i == word.length() - 1) System.out.println(word);
+                        if (i == word.length() - 1) {
+                            count++;
+                            if (count == 1)
+                                System.out.println(">> Обнаружено следующее совпадение:");
+                            System.out.println(count + ") " + word);
+                        }
                     } else break;
                 }
             }
         }
+        if (count == 0)
+            System.out.println(">> Таких слов в словаре не найдено.");
     }
 
-    //// TODO ДЗ: Метод поиска слов в словаре с символом-заменителем '*'
-    public void findStar(int dictionary, String sample) {
-        String dict = getDictByIndex(dictionary);
-        sample = sample.toLowerCase();
 
-        if (sample.contains("*")) {
-            System.out.println("символ '*' обнаружен!");
-            List<String> workList = new ArrayList<>();
-            String[] tempList = sample.split("[*]");
-            for (String s : tempList) {
-                workList.add(s);
+    ////  TODO ДЗ: Метод поиска слов в словаре с символом-заменителем '*'
+    public void findStar(String dict, String sample) {
+        List<String> workList = new ArrayList<>();
+        String[] tempList = sample.split("[*]");
+        for (String s : tempList) {
+            workList.add(s);
+        }
+        int count = 0;
+        for (String word : library.get(dict).keySet()) {
+            for (String piece : workList) {  //
+                System.out.println(++count + ". " + piece);
             }
-            workList.remove("");
-            int count = 1;
-            for (int i = 0; i < workList.size(); i++) {
-                System.out.println(count++ + ") " + workList.get(i));
+            for (int j = 0, i = 0; j < workList.size(); j++) {
+                if (workList.get(j).equals("")) i++;  // если звездочка в начале, поиск в word начинаем с индекса 1
+                if ()
             }
-            System.out.println("_начинаем перебор словаря:");
-            for (String word : library.get(dict).keySet()) {
-                System.out.print("_берем слово " + word + ". ");
-                for (int i = 0; i < workList.size(); i++) {
-                    System.out.print("_содержит ли в нем " + workList.get(i) + "? ");
-                    System.out.println(word.indexOf(workList.get(i)));
 
+        }
+    }
+
+    /* ВАРИАНТ 3 */
+//        int count = 0;
+//        int indexWord = 0;
+//        System.out.println("_начинаем поиск крайних звездочек:");
+//        for (String word : library.get(dict).keySet()) {
+//            if (sample.length() == 1) {  // если sample - только одна звездочка
+//                System.out.println(++count + ". " + word);
+//            }
+//            else
+//                for (int i = 0, j = 0; i < word.length();) {  // перебор каждой буквы слова word
+//                    if (sample.charAt(j) == '*') {  // если в sample текущий символ - звездочка
+//                        if (i < word.length() - 1) {  // если индекс i - не последний
+//                            i++;
+//                        }
+//                        else
+//                            System.out.println(++count + ". " + word);
+//                        if (j < sample.length() - 1) {  // если индекс j - не последний
+//                            j++;
+//                        }
+//                        else
+//                            System.out.println(++count + ". " + word);
+//
+//                    }
+//                    else {
+//
+//                    }
+//
+//                }
+//        }
+//    }
+
+        /* ВАРИАНТ V2 */
+//        if (sample.contains("*")) {
+//            System.out.println("символ '*' обнаружен!");
+//            List<String> workList = new ArrayList<>();
+//            String[] tempList = sample.split("[*]");
+//            for (String s : tempList) {
+//                workList.add(s);
+//            }
+//            workList.remove("");
+//            int count = 1;
+//            for (int i = 0; i < workList.size(); i++) {
+//                System.out.println(count++ + ") " + workList.get(i));
+//            }
+//            System.out.println("_начинаем перебор словаря:");
+//            for (String word : library.get(dict).keySet()) {
+//                System.out.print("_берем слово " + word + ". ");
+//                for (int i = 0; i < workList.size(); i++) {
+//                    System.out.print("_содержит ли в нем " + workList.get(i) + "? ");
+//                    System.out.println(word.indexOf(workList.get(i)));
+//
 //                    if (word.contains(workList.get(i)) {
 //
 //                    }
-                }
-            }
-        }
+//                }
+//            }
+//        }
+
+
 //            for (int i = 0, j = 0; i < sample.length();) {
 ////                System.out.println("ищем по " + sample.charAt(i));
 //                if (sample.charAt(i) == word.charAt(j)) {
@@ -307,7 +377,7 @@ public class Library {
 //                    if (j == word.length() - 1) System.out.println(word);
 //                } else break;
 //            }
-    }
+//    }
 
     //// Служебный метод, заполняющий тренировочный словарь en-ru
     public void fillEnRu() {
