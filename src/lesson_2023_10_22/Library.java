@@ -3,19 +3,13 @@ package lesson_2023_10_22;
 import java.util.*;
 
 public class Library {
+
     ////// --= Поле класса =--
     private Map<String, Map<String, List<String>>> library;  // библиотека словарей в формате словаря Map
-//    private List<Integer> numerator;  // коллекция для хранения перемешанных индексов для работы с wordOrigin и wordTrans
-//    private List<String> wordTrans;  // коллекция всех слов-переводов всей библиотеки
-//    private List<String> wordOrigin;  // коллекция оригинальных слов, соответствующих словам-переводам в wordTrans
 
     ////// --= Блок инициализации =--
     {
         this.library = new TreeMap<>();
-//        this.numerator = new ArrayList<>();
-//        this.wordTrans = new ArrayList<>();
-//        this.wordOrigin = new ArrayList<>();
-
     }
 
     ////// --= Методы класса =--
@@ -124,9 +118,7 @@ public class Library {
     //// Метод выводит содержимое всех имеющихся словарей
     public void printLibrary() {
         int count = 1;
-//        System.out.println();
         for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
-//            System.out.println("-------------------------");
             System.out.println(count++ + ") Содержимое словаря " + newKey + ":");
             for (String original : library.get(newKey).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
                 System.out.print(original + " - ");
@@ -141,7 +133,7 @@ public class Library {
         }
     }
 
-    //// TODO ДЗ: метод выводит содержимое конкретного словаря
+    //// Метод выводит содержимое конкретного словаря
     public void printCards(String dictionary) {
         dictionary = dictionary.toLowerCase();
         System.out.println("-------------------------");
@@ -160,7 +152,7 @@ public class Library {
     }
 
 
-    //// TODO ДЗ: Метод удаляет словарную карточку
+    //// Метод удаляет словарную карточку (оригинальное слово и слово-перевод)
     public boolean removeCard(String dictionary, String original) {
         dictionary = dictionary.toLowerCase();
         original = original.toLowerCase();
@@ -173,7 +165,7 @@ public class Library {
         return false;
     }
 
-    //// TODO ДЗ: Метод удаляет слово-перевод
+    //// Метод удаляет слово-перевод
     public boolean removeTrans(String dictionary, String original, String translation) {
         original = original.toLowerCase();
         dictionary = dictionary.toLowerCase();
@@ -195,16 +187,16 @@ public class Library {
         return false;
     }
 
-    //// TODO ДЗ: Метод выводит все словарные карточки указанного словаря, начинающиеся на переданный образец
+    //// Метод выводит все словарные карточки указанного словаря, содержащие переданный образец
     public void printContains(String dictionary, String sample) {
         dictionary = dictionary.toLowerCase();
         sample = sample.toLowerCase();
-        System.out.println("Словарные карточки словаря \'" + dictionary + "\', начинающиеся с \'" + sample + "\':");
         int count = 0;
         for (String original : library.get(dictionary).keySet()) {  // перебор всех слов-ключей переданного словаря
-            if (original.startsWith(sample)) {  // если слово-ключ начинается с образца...
+            if (original.indexOf(sample) >= 0) {  // если слово-ключ содержит образец...
                 count++;
-                System.out.print(original + " - ");
+                if (count == 1) System.out.println(">> Словарные карточки словаря \'" + dictionary + "\', начинающиеся с \'" + sample + "\':");
+                System.out.print(count + ") " + original + " - ");
                 List<String> get = library.get(dictionary).get(original);
                 for (int i = 0; i < get.size(); i++) {
                     String translation = get.get(i);  // перебор всех слов-переводов в коллекциях original
@@ -217,7 +209,7 @@ public class Library {
         if (count == 0) System.out.println("Слов, начинающихся с \'" + sample + "\' не найдено");
     }
 
-    //// Метод, возвращающий наименование словаря по индексу его расположения в библиотеке
+    //// Метод, возвращающий наименование словаря по индексу его расположения в библиотеке (индекс передан в строчном формате)
     public String getDictByIndex(String strIndex) {
         int index = 0;
         index = Integer.parseInt(strIndex);
@@ -233,8 +225,6 @@ public class Library {
 
     //// Метод, возвращающий наименование словаря по индексу его расположения в библиотеке
     public String getDictByIndex(int index) {
-//        int index = 0;
-//        index = Integer.parseInt(strIndex);
         int count = 1;  // индекс словарей начинается с единицы
         if (index <= library.keySet().size() && index > 0) {  // Проверяем, что введенный индекс не более количества словарей (т.е. размера библиотеки)
             for (String dictionary : library.keySet()) {
@@ -249,18 +239,18 @@ public class Library {
     public void findMask(int dictionary, String sample) {
         String dict = getDictByIndex(dictionary);
         sample = sample.toLowerCase();
-        /* если в маске нет звездочек */
-        if (!sample.contains("*"))
+
+        if (sample.contains("_"))  // если в запросе присутствует "_"
             findUnderscore(dict, sample);
-        /* если в маске есть звездочки */
-        else
+
+        else if (sample.contains("*"))  // если в запросе присутствует "*"
             findStar(dict, sample);
+
+        else printContains(dict, sample);  // если подстановочные знаки отсутствуют
     }
 
     //// TODO ДЗ: Метод поиска слов в словаре с символом-заменителем '_'
     public void findUnderscore(String dict, String sample) {
-//        String dict = getDictByIndex(dictionary);
-//        sample = sample.toLowerCase();
         int count = 0;
         for (String word : library.get(dict).keySet()) {
             if (word.length() == sample.length()) {
@@ -271,7 +261,14 @@ public class Library {
                             count++;
                             if (count == 1)
                                 System.out.println(">> Обнаружено следующее совпадение:");
-                            System.out.println(count + ") " + word);
+                            System.out.print(count + ") " + word + " - ");
+                            List<String> get = library.get(dict).get(word);
+                            for (int x = 0; x < get.size(); x++) {
+                                String translation = get.get(x);  // перебор всех слов-переводов в коллекциях original
+                                System.out.print(translation);
+                                if (x < get.size() - 1) System.out.print(", ");  // запятые ставим там, где они нужны
+                            }
+                            System.out.println();
                         }
                     } else break;
                 }
@@ -291,93 +288,53 @@ public class Library {
         }
         int count = 0;
         for (String word : library.get(dict).keySet()) {
-            for (String piece : workList) {  //
-                System.out.println(++count + ". " + piece);
-            }
-            for (int j = 0, i = 0; j < workList.size(); j++) {
-                if (workList.get(j).equals("")) i++;  // если звездочка в начале, поиск в word начинаем с индекса 1
-                if ()
-            }
+//            System.out.print("_берем слово " + word + " ");  // ОТЛАДОЧНОЕ
+            if (sample.equals("*")) {  // если поисковый запрос - одна звездочка
+                count++;
+                if (count == 1)
+                    System.out.println(">> Обнаружено следующее совпадение:");
+                System.out.println(count + ". " + word);
+            } else {
+                for (int j = 0, i = 0; j < workList.size(); i++, j++) {  // i - индекс в слове, j - индекс части запроса
+                    String piece = workList.get(j);  // сокращение для упрощения :-)
+//                System.out.println("_ищем в нем фрагмент " + piece + " с позиции " + i + ": ");  // ОТЛАДОЧНОЕ
 
+                    if (word.indexOf(workList.get(j), i) >= i) {  // если piece имеется в word
+                        int k = word.indexOf(workList.get(j), i);  // k - индекс word, где начинается очередная часть запроса
+//                System.out.println(k);  // ОТЛАДОЧНОЕ
+//                    System.out.println("обнаружено");  // ОТЛАДОЧНОЕ
+                        i = k + piece.length();  // сдвигаем поиск в слове на длину части запроса
+                        if (j == workList.size() - 1 && !sample.endsWith("*") && word.endsWith(piece)) {
+                            count++;
+                            System.out.print(count + ". " + word + " - ");
+                            List<String> get = library.get(dict).get(word);
+                            for (int x = 0; x < get.size(); x++) {
+                                String translation = get.get(x);  // перебор всех слов-переводов в коллекциях original
+                                System.out.print(translation);
+                                if (x < get.size() - 1) System.out.print(", ");  // запятые ставим там, где они нужны
+                            }
+                            System.out.println();
+                        } else if (j == workList.size() - 1 && sample.endsWith("*") && !word.endsWith(workList.get(j))) {
+                            count++;
+                            System.out.print(count + ". " + word + " - ");
+                            List<String> get = library.get(dict).get(word);
+                            for (int x = 0; x < get.size(); x++) {
+                                String translation = get.get(x);  // перебор всех слов-переводов в коллекциях original
+                                System.out.print(translation);
+                                if (x < get.size() - 1) System.out.print(", ");  // запятые ставим там, где они нужны
+                            }
+                            System.out.println();
+                        }
+                    } else {
+//                    System.out.println("не обнаружено");  // ОТЛАДОЧНОЕ
+                        break;
+                    }
+                }
+            }
         }
+        if (count == 0)
+            System.out.println(">> Таких слов в словаре не найдено.");
     }
-
-    /* ВАРИАНТ 3 */
-//        int count = 0;
-//        int indexWord = 0;
-//        System.out.println("_начинаем поиск крайних звездочек:");
-//        for (String word : library.get(dict).keySet()) {
-//            if (sample.length() == 1) {  // если sample - только одна звездочка
-//                System.out.println(++count + ". " + word);
-//            }
-//            else
-//                for (int i = 0, j = 0; i < word.length();) {  // перебор каждой буквы слова word
-//                    if (sample.charAt(j) == '*') {  // если в sample текущий символ - звездочка
-//                        if (i < word.length() - 1) {  // если индекс i - не последний
-//                            i++;
-//                        }
-//                        else
-//                            System.out.println(++count + ". " + word);
-//                        if (j < sample.length() - 1) {  // если индекс j - не последний
-//                            j++;
-//                        }
-//                        else
-//                            System.out.println(++count + ". " + word);
-//
-//                    }
-//                    else {
-//
-//                    }
-//
-//                }
-//        }
-//    }
-
-        /* ВАРИАНТ V2 */
-//        if (sample.contains("*")) {
-//            System.out.println("символ '*' обнаружен!");
-//            List<String> workList = new ArrayList<>();
-//            String[] tempList = sample.split("[*]");
-//            for (String s : tempList) {
-//                workList.add(s);
-//            }
-//            workList.remove("");
-//            int count = 1;
-//            for (int i = 0; i < workList.size(); i++) {
-//                System.out.println(count++ + ") " + workList.get(i));
-//            }
-//            System.out.println("_начинаем перебор словаря:");
-//            for (String word : library.get(dict).keySet()) {
-//                System.out.print("_берем слово " + word + ". ");
-//                for (int i = 0; i < workList.size(); i++) {
-//                    System.out.print("_содержит ли в нем " + workList.get(i) + "? ");
-//                    System.out.println(word.indexOf(workList.get(i)));
-//
-//                    if (word.contains(workList.get(i)) {
-//
-//                    }
-//                }
-//            }
-//        }
-
-
-//            for (int i = 0, j = 0; i < sample.length();) {
-////                System.out.println("ищем по " + sample.charAt(i));
-//                if (sample.charAt(i) == word.charAt(j)) {
-//                    System.out.println(sample.charAt(i) + " из sample совпало с " + word.charAt(j) + " из word");
-//                    i++;
-//                    if (j < word.length() - 1) j++;
-//                    else break;
-//                    if (j == word.length() - 1) System.out.println(word);
-//
-//                }
-//                else if (sample.charAt(i) == '*') {
-//                    if (j < word.length() - 1) j++;
-//                    else break;
-//                    if (j == word.length() - 1) System.out.println(word);
-//                } else break;
-//            }
-//    }
 
     //// Служебный метод, заполняющий тренировочный словарь en-ru
     public void fillEnRu() {
@@ -397,54 +354,5 @@ public class Library {
         addCard("en-ru", "house", "дом");
         addCard("en-ru", "book", "книга");
         addCard("en-ru", "phone", "телефон");
-        addCard("en-ru", "apple", "яблоко");
-        addCard("en-ru", "orange", "апельсин");
     }
-
-
-//    //// Метод, создающий служебный словарь, состоящий из всех словарных карточек всех словарей
-//    private Map<String, List<String>> serverMap() {
-//        Map<String, List<String>> serverMap = new HashMap<>();
-//        return serverMap;
-//    }
-
-    //// Метод, возвращающий ключ из служебного словаря по переданному индексу
-
-//    //// TODO ДЗ: метод-тренажер
-//    public void train() {
-//        for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
-//            for (String original : library.get(newKey).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
-//                for (String translation : library.get(newKey).get(original)) {
-//                    wordTrans.add(translation);
-//                    wordOrigin.add(original);
-//                }
-//            }
-//        }
-////        System.out.println(wordTrans);
-////        System.out.println(wordOrigin);
-//        int size = wordTrans.size();
-//        for (int i = 0; i < size; i++) {
-//            numerator.add(i);
-//        }
-//        Collections.shuffle(numerator);
-////        System.out.println(numerator);
-//
-//
-//        System.out.println("Вводите перевод каждого слова, или нажмите 1 для выхода.");
-//        boolean switcher = true;
-//        while (switcher) {
-//            for (int i : numerator) {
-//                System.out.print(wordTrans.get(i) + " = ");
-//                Scanner scanner = new Scanner(System.in);
-//                String input = scanner.nextLine();
-//                if (input.equals("1")) {
-//                    System.out.println("Работа тренажера завершена.");
-//                    switcher = false;
-//                    break;
-//                } else if (input.equalsIgnoreCase(wordOrigin.get(i))) System.out.println("Верно!");
-//                else System.out.println("Неверно!");
-////                if (!switcher) break;
-//            }
-//        }
-//    }
 }
