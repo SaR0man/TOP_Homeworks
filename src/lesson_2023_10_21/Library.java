@@ -5,17 +5,10 @@ import java.util.*;
 public class Library {
     ////// --= Поле класса =--
     private Map<String, Map<String, List<String>>> library;  // библиотека словарей в формате словаря Map
-//    private List<Integer> numerator;  // коллекция для хранения перемешанных индексов для работы с wordOrigin и wordTrans
-//    private List<String> wordTrans;  // коллекция всех слов-переводов всей библиотеки
-//    private List<String> wordOrigin;  // коллекция оригинальных слов, соответствующих словам-переводам в wordTrans
 
     ////// --= Блок инициализации =--
     {
         this.library = new TreeMap<>();
-//        this.numerator = new ArrayList<>();
-//        this.wordTrans = new ArrayList<>();
-//        this.wordOrigin = new ArrayList<>();
-
     }
 
     ////// --= Методы класса =--
@@ -230,52 +223,4 @@ public class Library {
         }
         return null;
     }
-
-
-
-//    //// Метод, создающий служебный словарь, состоящий из всех словарных карточек всех словарей
-//    private Map<String, List<String>> serverMap() {
-//        Map<String, List<String>> serverMap = new HashMap<>();
-//        return serverMap;
-//    }
-
-    //// Метод, возвращающий ключ из служебного словаря по переданному индексу
-
-//    //// TODO ДЗ: метод-тренажер
-//    public void train() {
-//        for (String newKey : library.keySet()) {  // перебор всех словарей библиотеки
-//            for (String original : library.get(newKey).keySet()) {  // перебор всех ключей (оригинальных слов) в словаре
-//                for (String translation : library.get(newKey).get(original)) {
-//                    wordTrans.add(translation);
-//                    wordOrigin.add(original);
-//                }
-//            }
-//        }
-////        System.out.println(wordTrans);
-////        System.out.println(wordOrigin);
-//        int size = wordTrans.size();
-//        for (int i = 0; i < size; i++) {
-//            numerator.add(i);
-//        }
-//        Collections.shuffle(numerator);
-////        System.out.println(numerator);
-//
-//
-//        System.out.println("Вводите перевод каждого слова, или нажмите 1 для выхода.");
-//        boolean switcher = true;
-//        while (switcher) {
-//            for (int i : numerator) {
-//                System.out.print(wordTrans.get(i) + " = ");
-//                Scanner scanner = new Scanner(System.in);
-//                String input = scanner.nextLine();
-//                if (input.equals("1")) {
-//                    System.out.println("Работа тренажера завершена.");
-//                    switcher = false;
-//                    break;
-//                } else if (input.equalsIgnoreCase(wordOrigin.get(i))) System.out.println("Верно!");
-//                else System.out.println("Неверно!");
-////                if (!switcher) break;
-//            }
-//        }
-//    }
 }
