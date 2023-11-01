@@ -2,14 +2,18 @@ package lesson_2023_10_28;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
+
+/* TODO Программа намеренно выполняет только одну выбранную операцию,
+*   чтобы увидеть изменения в дереве проекта */
 
 public class Main {
-    public static void addDirAndFileInDir(String dirName, String fileName) {
+    public static void addDirAndFileInDir(String dirName, String fileName, String fileExtension) {
         try {
             File dir = new File(dirName);
             if (!dir.exists())
                 dir.mkdir();
-            File file = new File(dir.getAbsolutePath() + "/" + fileName + ".txt");
+            File file = new File(dir.getAbsolutePath() + "/" + fileName + "." + fileExtension);
             if (!file.exists())
                 file.createNewFile();
         } catch (IOException e) {
@@ -17,21 +21,19 @@ public class Main {
         }
     }
 
-    public static void deleteDirAndFileInDir(String dirName, String fileName) {
+    public static void deleteDirAndFileInDir(String dirName, String fileName, String fileExtension) {
 
         try {
             File dir = new File(dirName);
             if (dir.isDirectory()) {
-                File file = new File(dir.getAbsolutePath(), fileName + ".txt");  // не забываем подставить расширение файла!
+                File file = new File(dir.getAbsolutePath(), fileName + "." + fileExtension);  // не забываем подставить расширение файла!
                 if (file.isFile()) {
                     System.out.println("Файл удален? " + file.delete());
                 }
                 System.out.println("Директория удалена? " + dir.delete());
-            }
-            else
+            } else
                 System.out.println("Что-то пошло не так...");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -41,33 +43,34 @@ public class Main {
         if (!workDir.exists())
             workDir.mkdir();
 
-        File dirName = new File(workDir.getAbsolutePath() + "/dir_");
-        File fileName = new File("file_");
-        int count = 10;
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("1 - Создать файлы и папки");
+        System.out.println("2 - Удалить файлы и папки");
+        System.out.print(">_");
+        Integer choice = scanner.nextInt();
+
+        System.out.print("Введите наименование директории >_");
+        scanner = new Scanner(System.in);
+        String dir = scanner.nextLine();
+        System.out.print("Введите имя файла >_");
+        String file = scanner.nextLine();
+        System.out.print("Введите расширение файла, например: txt>_");
+        String fileExtension = scanner.nextLine();
+        System.out.print("Введите счетчик операций >_");
+        Integer count = scanner.nextInt();
+
+
+        File dirName = new File(workDir.getAbsolutePath() + "/" + dir);
+        File fileName = new File(file);
 
         for (int i = 0; i < count; i++) {
             String index = "" + i;
-//            addDirAndFileInDir(dirName + index, fileName + index);
-            deleteDirAndFileInDir(dirName + index, fileName + index);
+            if (choice == 1)
+                addDirAndFileInDir(dirName + index, fileName + index, fileExtension);
+            else
+                deleteDirAndFileInDir(dirName + index, fileName + index, fileExtension);
         }
 
-//        try {
-//            File dir = new File("directory");
-//            if (dir.exists()) {
-//                System.out.println("Такая папка существует.");
-//            } else {
-//                dir.mkdir();
-//                System.out.println("Папка успешно создана.");
-//            }
-//            File file = new File(dir.getAbsolutePath() + "/file.txt");
-//            if (file.exists()) {
-//                System.out.println("Такой файл уже существует.");
-//            } else {
-//                file.createNewFile();
-//                System.out.println("Файл успешно создан.");
-//            }
-//        } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//        }
     }
 }
