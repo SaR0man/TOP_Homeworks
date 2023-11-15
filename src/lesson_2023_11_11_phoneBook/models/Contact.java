@@ -1,13 +1,13 @@
 package lesson_2023_11_11_phoneBook.models;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
-public class Person {
-    public Person() {
+public class Contact {
+    public Contact() {
     }
 
-    public Person(String lastName, String firstName, String patronymic, Gender gender, int[] birth, String phoneNumber, Type type) {
+    public Contact(String lastName, String firstName, String patronymic, Gender gender, int[] birth, String phoneNumber, Type type) {
         this.id = ++count;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -29,11 +29,9 @@ public class Person {
     }
     private String phoneNumber;
     Type type;
-
     public enum Type {
         MOBILE, HOME, WORK, FAX
     }
-
     private int[] birth = new int[3];
 
     public int[] getBirth() {
@@ -92,22 +90,24 @@ public class Person {
         this.type = type;
     }
 
-    //// вычисляем возраст абонента
-    public int age() {
+    //// вычисляем возраст контакта
+    public int age(int[] birth) {
         int age = 0;
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        LocalDate now = LocalDate.now();  // узнаём текущую дату (в формате YYYY-MM-DD)
+        LocalDate birthDate = LocalDate.of(birth[2], birth[1], birth[0]);  // приводим значения массива birth к формату LocalDate (в формате YYYY-MM-DD)
+        age = (int) ((int) ChronoUnit.DAYS.between(birthDate, now) / 365.25);  // вычисляем разницу между датой рождения и текущей датой в годах
         return age;
     }
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "Contact{" +
                 "lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", patronymic='" + patronymic + '\'' +
                 ", gender=" + gender +
-                ", birth=" + birth[0] + "." + birth[1] + "." + birth[2] +
+                ", birth=" + birth[2] + "." + birth[1] + "." + birth[0] +
+                ", age=" + age(birth) +
                 ", phoneNumber=" + phoneNumber +
                 ", type=" + type +
                 ", id=" + id +
