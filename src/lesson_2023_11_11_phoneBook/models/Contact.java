@@ -2,21 +2,12 @@ package lesson_2023_11_11_phoneBook.models;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Contact {
-    public Contact() {
-    }
 
-    public Contact(String lastName, String firstName, String patronymic, Gender gender, int[] birth, String phoneNumber, Type type) {
-        this.id = ++count;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.patronymic = patronymic;
-        this.gender = gender;
-        this.birth = birth;
-        this.phoneNumber = phoneNumber;
-        this.type = type;
-    }
+    ////// --= ПОЛЯ ==--
 
     private  static int count;
     private int id;
@@ -33,6 +24,25 @@ public class Contact {
         MOBILE, HOME, WORK, FAX
     }
     private int[] birth = new int[3];
+    private Map<String, Type> phoneNumberAndType = new HashMap<>();
+
+////// --= КОНСТРУКТОРЫ =--
+
+    public Contact() {
+    }
+    public Contact(String lastName, String firstName, String patronymic, Gender gender, int[] birth, Map phoneNumberAndType) { // backup: String phoneNumber, Type type
+        this.id = ++count;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.patronymic = patronymic;
+        this.gender = gender;
+        this.birth = birth;
+//        this.phoneNumber = phoneNumber;
+//        this.type = type;
+        this.phoneNumberAndType = phoneNumberAndType;
+    }
+
+    ////// --= ГЕТТЕРЫ, СЕТТЕРЫ =--
 
     public int[] getBirth() {
         return birth;
@@ -74,21 +84,31 @@ public class Contact {
         this.gender = gender;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+//    public String getPhoneNumber() {
+//        return phoneNumber;
+//    }
+//
+//    public void setPhoneNumber(String phoneNumber) {
+//        this.phoneNumber = phoneNumber;
+//    }
+//
+//    public Type getType() {
+//        return type;
+//    }
+//
+//    public void setType(Type type) {
+//        this.type = type;
+//    }
+
+    public Map<String, Type> getPhoneNumberAndType() {
+        return phoneNumberAndType;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhoneNumberAndType(Map<String, Type> phoneNumberAndType) {
+        this.phoneNumberAndType = phoneNumberAndType;
     }
 
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
+    ////// --= МЕТОДЫ =--
 
     //// вычисляем возраст контакта
     public int age(int[] birth) {
@@ -98,6 +118,9 @@ public class Contact {
         age = (int) ((int) ChronoUnit.DAYS.between(birthDate, now) / 365.25);  // вычисляем разницу между датой рождения и текущей датой в годах
         return age;
     }
+
+//    //// сеттер для phoneNumberAndType
+//    public void setPhoneNumberAndType()
 
     @Override
     public String toString() {

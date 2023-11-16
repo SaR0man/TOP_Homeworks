@@ -5,10 +5,16 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PhoneBook {
-    List<Contact> book = new ArrayList<>();
 
+    ////// --= Поле =--
+    private List<Contact> phoneBook;
 
-    ////// МЕТОДЫ
+    ////// --= Блок инициализации =--
+    {
+        this.phoneBook = new ArrayList<>();
+    }
+
+    ////// --= Методы =--
     //// стартовый баннер
     public static void starter() {
         System.out.println("========================");
@@ -22,14 +28,13 @@ public class PhoneBook {
         Scanner scanner = new Scanner(System.in);
 
         do {
-        System.out.println("========================");
+            System.out.println("========================");
             System.out.println("1 - Добавить новый контакт");
             System.out.println("2 - Вывести список контактов");
             System.out.println("0 - Завершить программу");
             System.out.print(">_");
 
             action = scanner.nextLine();
-
 
             if (action.equals("1")) {
                 if (addContact())
@@ -49,7 +54,36 @@ public class PhoneBook {
 
     //// добавление нового контакта
     public static boolean addContact() {
+        Contact contact = new Contact();
         boolean flag = false;
+        Scanner scanner = new Scanner(System.in);
+        String actionAdd;
+
+        do {
+            System.out.print("Введите фамилию >_");
+            actionAdd = scanner.nextLine();
+            if (!actionAdd.isBlank()) {
+                contact.setLastName(actionAdd);
+                break;
+            }
+            else
+                System.out.println(">> поле не может быть пустым!");
+        } while (true);
+
+        do {
+            System.out.print("Введите имя >_");
+            actionAdd = scanner.nextLine();
+            if (!actionAdd.isBlank()) {
+                contact.setFirstName(actionAdd);
+                flag = true;  // для теста!
+                break;
+            }
+            else
+                System.out.println(">> поле не может быть пустым!");
+        } while (true);
+
+
+
         return flag;
     }
 
