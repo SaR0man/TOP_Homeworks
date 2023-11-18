@@ -6,7 +6,7 @@ import lesson_2023_11_11_phoneBook.models.PhoneBook;
 public class Main {
     public static void main(String[] args) {
 
-        PhoneBook.starter();
+        PhoneBook.mainMenu();
         System.out.println("_ конец Main.main");  // тестовое!
 
 //        Contact contact1 = new Contact(

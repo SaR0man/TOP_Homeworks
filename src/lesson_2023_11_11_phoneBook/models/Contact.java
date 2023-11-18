@@ -4,6 +4,15 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+
+enum Gender {
+    MALE, FEMALE
+}
+
+enum Type {
+    MOBILE, HOME, WORK, FAX
+}
 
 public class Contact {
 
@@ -15,14 +24,8 @@ public class Contact {
     private String firstName;
     private String patronymic;
     Gender gender;
-    public enum Gender {
-        MALE, FEMALE
-    }
     private String phoneNumber;
     Type type;
-    public enum Type {
-        MOBILE, HOME, WORK, FAX
-    }
     private int[] birth = new int[3];
     private Map<String, Type> phoneNumberAndType = new HashMap<>();
 
@@ -43,6 +46,9 @@ public class Contact {
     }
 
     ////// --= ГЕТТЕРЫ, СЕТТЕРЫ =--
+
+
+    public int getId() { return id; }
 
     public int[] getBirth() {
         return birth;
@@ -110,6 +116,39 @@ public class Contact {
 
     ////// --= МЕТОДЫ =--
 
+    //// создаем контакт
+    public boolean create(Contact contact) {
+//        Contact contact = new Contact();
+        boolean flag = false;
+        Scanner scanner = new Scanner(System.in);
+        String actionAdd;
+
+        while (true) {
+            System.out.print("Введите имя >_");
+            actionAdd = scanner.nextLine();
+            if (!actionAdd.isBlank()) {
+                contact.setFirstName(actionAdd);
+                break;
+            }
+            else
+                System.out.println(">> поле не может быть пустым!");
+        }
+
+        while (true) {
+            System.out.print("Введите фамилию >_");
+            actionAdd = scanner.nextLine();
+            if (!actionAdd.isBlank()) {
+                contact.setLastName(actionAdd);
+                flag = true;  // для тестирования!
+                break;
+            }
+            else
+                System.out.println(">> поле не может быть пустым!");
+        }
+
+        return flag;
+    }
+
     //// вычисляем возраст контакта
     public int age(int[] birth) {
         int age = 0;
@@ -118,9 +157,6 @@ public class Contact {
         age = (int) ((int) ChronoUnit.DAYS.between(birthDate, now) / 365.25);  // вычисляем разницу между датой рождения и текущей датой в годах
         return age;
     }
-
-//    //// сеттер для phoneNumberAndType
-//    public void setPhoneNumberAndType()
 
     @Override
     public String toString() {
