@@ -17,6 +17,7 @@ public class Menu {
             System.out.println("===== ГЛАВНОЕ МЕНЮ =====");
             System.out.println("1 - Добавить контакт");
             System.out.println("2 - Вывести содержимое книги");
+            System.out.println("3 - Удалить контакт");
             System.out.println("4 - Записать содержимое книги в файл");
             System.out.println("9 - Загрузить тестовую книгу");
             System.out.println("0 - Завершить программу");
@@ -49,6 +50,12 @@ public class Menu {
                     } else
                         System.out.println(">> некорректный ввод!");
                 }
+            } else if (action.equals("3")) {
+                phoneBook.readByID();
+                System.out.print("Введите id контакта для удаления: >_");
+                int delID = scanner.nextInt();
+                if (!phoneBook.delete(delID))
+                    break;
             } else if (action.equals("4")) {
                 System.out.println("Здесь будет производиться запись содержимого книги в файл");
             } else if (action.equals("9")) {
