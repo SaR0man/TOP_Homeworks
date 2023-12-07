@@ -81,6 +81,10 @@ public class Menu {
                 phoneBook.editing(editById);
             }
 
+            else if (action.equals("6")) {
+                System.out.println("_ здесь будет поиск");
+            }
+
             else if (action.equals("9")) {
                 phoneBook.enterTestBook();
             } else if (action.equals("0")) {

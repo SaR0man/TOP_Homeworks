@@ -128,7 +128,7 @@ public class PhoneBook {
                     data = newData.nextLine();
                     if (!data.isBlank()) phoneBook.get(i).setPhoneNumber(data);
 
-                    System.out.print("* Текущий тип номера: " + phoneBook.get(i).getType());
+                    System.out.print("* Текущий тип номера: \'" + phoneBook.get(i).getType().getType() + "\'");
                     System.out.print(". Enter - оставить; или ввести новый тип:\n1-Мобильный, 2-Домашний, 3-Рабочий, 4-Факс >_");
                     data = newData.nextLine();
                     if (!data.isBlank()) {
@@ -166,15 +166,18 @@ public class PhoneBook {
                         System.out.print("не заполнено");
                     else
                         System.out.print(phoneBook.get(i).getLastname());
-                    System.out.print(". Enter - оставить; или ввести новую фамилию >_");
+                    System.out.print(". Enter - оставить; 0-удалить; или ввести новую фамилию >_");
                     data = newData.nextLine();
-                    if (!data.isBlank()) phoneBook.get(i).setLastname(data);
+                    if (data.equals("0")) {
+                        phoneBook.get(i).setLastname("");
+                    }
+                    if (!data.isBlank() && !data.equals("0")) phoneBook.get(i).setLastname(data);
 
                     System.out.print("* Текущий пол абонента: ");
                     if (phoneBook.get(i).getSex() == Sex.ZERO || phoneBook.get(i).getSex() == null)
                         System.out.print("не заполнено");
                     else
-                        System.out.print(phoneBook.get(i).getSex());
+                        System.out.print("\'" + phoneBook.get(i).getSex().getSex() + "\'");
                     System.out.print(". Enter - оставить; или ввести новый пол:\n1-Мужской, 2-Женский >_");
                     data = newData.nextLine();
                     if (!data.isBlank()) {
@@ -193,7 +196,7 @@ public class PhoneBook {
                     if (phoneBook.get(i).getBirthday().equals(LocalDate.of(0, 1, 1)) || phoneBook.get(i).getBirthday() == null)
                         System.out.print("не заполнено");
                     else
-                        System.out.print(phoneBook.get(i).getBirthday());
+                        System.out.print(phoneBook.get(i).getBirthday().getDayOfMonth() + "." + phoneBook.get(i).getBirthday().getMonthValue() + "." + phoneBook.get(i).getBirthday().getYear());
                     System.out.print(". Enter - оставить; или ввести дату рождения в формате \"dd.MM.yyyy\" >_");
                     data = newData.nextLine();
                     if (!data.isBlank()) phoneBook.get(i).setBirthday(LocalDate.parse(data, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
