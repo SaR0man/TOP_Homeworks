@@ -1,6 +1,8 @@
 package lesson_2023_11_11_phoneBook.models;
 
+import java.io.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -15,6 +17,7 @@ public class PhoneBook {
 
     ////// --= Методы =--
 
+    //// создание контакта и добавление его в телефонную книгу
     public void addContact() {
         phoneBook.add(Contact.create());
     }
@@ -49,29 +52,25 @@ public class PhoneBook {
 
     //// выводим все контакты ID
     public void readByID() {
-        System.out.println("================================================");
+        System.out.println("===== Список абонентов по ID =====");
         List<Contact> results = phoneBook.stream().sorted((x, y) -> Integer.valueOf(x.getId()).compareTo(Integer.valueOf(y.getId()))).toList();
         results.forEach(contact -> System.out.println(contact.toString()));
     }
 
     //// удаляем контакт
-    public boolean delete(int ID) {
-        int finalID = ID - 1;
-        System.out.println("_ пробуем удалить контакт с ID " + ID);
-        if (phoneBook.stream().anyMatch(x -> x.getId() == ID)) {
-//            System.out.println("_ нашли в книге ID " + finalID);
-            System.out.println("_ вроде нашли искомый " + phoneBook.stream().filter(x -> x.getId() == ID).findFirst().get());  // возвращает всю запись
-//            System.out.println("_ вроде нашли искомый " + phoneBook.stream().filter(x -> x.getId() == ID));  // возвращает ссылку
+    public boolean delete(int contactId) {
+        if (phoneBook.stream().anyMatch(x -> x.getId() == contactId)) {
 
-//            phoneBook.remove(phoneBook.stream().filter(x -> x.getId() == ID).findFirst());  // не работает
-//            phoneBook.remove(phoneBook.stream().filter(x -> x.getId() == ID));  // не работает
-//            phoneBook
-            Optional<Integer> index = phoneBook.stream()
-                            .map(Contact::getId)
-                                    .filter(i -> i == ID)
-                                            .findFirst();
-            System.out.println("_ как будто индекс равен " + index.get() + "!");
-            System.out.println(">> контакт с id " + ID + " удален!");
+            for (int i = 0; i < phoneBook.size(); i++) {
+                int index = phoneBook.get(i).getId();
+
+                if (index == contactId) {
+                    phoneBook.remove(i);
+                    break;
+                }
+            }
+
+            System.out.println(">> контакт с id " + contactId + " удален!");
             return true;
         } else {
             System.out.println(">> такого контакта не существует!");
@@ -79,17 +78,140 @@ public class PhoneBook {
         }
     }
 
-//    @Override
-//    public String toString() {
-//        return "PhoneBook{" +
-//                "phoneBook=" + phoneBook +
-//                '}';
-//    }
+    //// запись телефонной книги в файл
+    public void writeToFile() {
+        try {
+            File file = new File("Phonebook.txt");
+            file.createNewFile();
+
+            FileWriter fileWriter = new FileWriter(file);
+//            fileWriter.write("Text_1\n");
+
+            fileWriter.write("===== Список абонентов по ID =====\n");
+            List<Contact> results = phoneBook.stream().sorted((x, y) -> Integer.valueOf(x.getId()).compareTo(Integer.valueOf(y.getId()))).toList();
+            results.forEach(contact -> {
+                try {
+                    fileWriter.write(contact.toString() + "\n");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            fileWriter.flush();
+            fileWriter.close();
+            System.out.println(">> содержимое книги сохранено в файл 'Phonebook.txt'");
+        }
+        catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    //// редактируем контакт
+    public void editing(int contactId) {
+        if (phoneBook.stream().anyMatch(x -> x.getId() == contactId)) {
+
+            for (int i = 0; i < phoneBook.size(); i++) {
+                int index = phoneBook.get(i).getId();
+
+                if (index == contactId) {
+                    Scanner newData = new Scanner(System.in);
+                    System.out.println("-------- Редактирование контакта " + contactId + " --------");
+
+                    System.out.print("* Текущее имя: " + phoneBook.get(i).getFirstName());
+                    System.out.print(". Enter - оставить; или ввести новое имя >_");
+                    String data = newData.nextLine();
+                    if (!data.isBlank()) phoneBook.get(i).setFirstName(data);
+
+                    System.out.print("* Текущий номер: " + phoneBook.get(i).getPhoneNumber());
+                    System.out.print(". Enter - оставить; или ввести новый номер телефона >_");
+                    data = newData.nextLine();
+                    if (!data.isBlank()) phoneBook.get(i).setPhoneNumber(data);
+
+                    System.out.print("* Текущий тип номера: " + phoneBook.get(i).getType());
+                    System.out.print(". Enter - оставить; или ввести новый тип:\n1-Мобильный, 2-Домашний, 3-Рабочий, 4-Факс >_");
+                    data = newData.nextLine();
+                    if (!data.isBlank()) {
+                        while (true) {
+                            if (data.equals("1")) {
+                                phoneBook.get(i).setType(Type.MOBILE);
+                                break;
+                            } else if (data.equals("2")) {
+                                phoneBook.get(i).setType(Type.HOME);
+                                break;
+                            } else if (data.equals("3")) {
+                                phoneBook.get(i).setType(Type.WORK);
+                                break;
+                            } else if (data.equals("4")) {
+                                phoneBook.get(i).setType(Type.FAX);
+                                break;
+                            } else System.out.println(">> ввод некорректный!");
+                        }
+                    }
+
+                    System.out.print("* Текущее отчество: ");
+                    if (phoneBook.get(i).getPatronymic().isBlank() || phoneBook.get(i).getPatronymic() == null)
+                        System.out.print("не заполнено");
+                    else
+                        System.out.print(phoneBook.get(i).getPatronymic());
+                    System.out.print(". Enter - оставить; 0-удалить; или ввести новое отчество >_");
+                    data = newData.nextLine();
+                    if (data.equals("0")) {
+                        phoneBook.get(i).setPatronymic("");
+                    }
+                    else if (!data.isBlank() && !data.equals("0")) phoneBook.get(i).setPatronymic(data);
+
+                    System.out.print("* Текущая фамилия: ");
+                    if (phoneBook.get(i).getLastname().isBlank() || phoneBook.get(i).getLastname() == null)
+                        System.out.print("не заполнено");
+                    else
+                        System.out.print(phoneBook.get(i).getLastname());
+                    System.out.print(". Enter - оставить; или ввести новую фамилию >_");
+                    data = newData.nextLine();
+                    if (!data.isBlank()) phoneBook.get(i).setLastname(data);
+
+                    System.out.print("* Текущий пол абонента: ");
+                    if (phoneBook.get(i).getSex() == Sex.ZERO || phoneBook.get(i).getSex() == null)
+                        System.out.print("не заполнено");
+                    else
+                        System.out.print(phoneBook.get(i).getSex());
+                    System.out.print(". Enter - оставить; или ввести новый пол:\n1-Мужской, 2-Женский >_");
+                    data = newData.nextLine();
+                    if (!data.isBlank()) {
+                        while (true) {
+                            if (data.equals("1")) {
+                                phoneBook.get(i).setSex(Sex.MALE);
+                                break;
+                            } else if (data.equals("2")) {
+                                phoneBook.get(i).setSex(Sex.FEMALE);
+                                break;
+                            } else System.out.println(">> ввод некорректный!");
+                        }
+                    }
+
+                    System.out.print("* Текущая дата рождения: ");
+                    if (phoneBook.get(i).getBirthday().equals(LocalDate.of(0, 1, 1)) || phoneBook.get(i).getBirthday() == null)
+                        System.out.print("не заполнено");
+                    else
+                        System.out.print(phoneBook.get(i).getBirthday());
+                    System.out.print(". Enter - оставить; или ввести дату рождения в формате \"dd.MM.yyyy\" >_");
+                    data = newData.nextLine();
+                    if (!data.isBlank()) phoneBook.get(i).setBirthday(LocalDate.parse(data, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+
+                    break;
+                }
+            }
+
+        } else {
+            System.out.println(">> такого контакта не существует!");
+        }
+
+    }
 
     //// ввод тестовой телефонной книги
     public void enterTestBook() {
-        phoneBook.add(0, new Contact("Феодосия", "+7222333444", Type.HOME, "", "", null, null));
-        phoneBook.add(1, new Contact("Иван", "+7333444555", Type.WORK, "Федорович", "Крузенштерн", Sex.MALE, null));
+        phoneBook.add(0, new Contact("Феодосия", "+7222333444", Type.HOME, "", "", Sex.ZERO, LocalDate.of(0,1,1)));
+        phoneBook.add(1, new Contact("Иван", "+7333444555", Type.WORK, "Федорович", "Крузенштерн", Sex.MALE, LocalDate.of(0,1,1)));
         phoneBook.add(2, new Contact("Клементина", "+7111222333", Type.MOBILE, "Агаповна", "Хронобегова", Sex.FEMALE, LocalDate.of(1964,01,21)));
         phoneBook.add(3, new Contact("Варфоломей", "+7444555666", Type.MOBILE, "Галактионович", "Староверов", Sex.MALE, LocalDate.of(2010,11,27)));
         System.out.println(">> тестовая книга добавлена!");

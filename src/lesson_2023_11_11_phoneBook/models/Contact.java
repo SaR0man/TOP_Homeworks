@@ -17,7 +17,7 @@ enum Type {  // тип телефонного номера
 }
 
 enum Sex {  // пол абонента
-    MALE("муж."), FEMALE("жен.");
+    MALE("муж."), FEMALE("жен."), ZERO("");
 
     private String sex;
 
@@ -114,8 +114,6 @@ public class Contact {
 
     public int getAge() { return age; }
 
-    public void setAge(int age) { this.age = age; }
-
     ////// --= Методы =--
 
     //// создаем новый контакт
@@ -191,9 +189,13 @@ public class Contact {
                 contact.setLastname(newLastname);
 
                 while (true) {
-                    System.out.print("Введите пол: 1-Мужчина, 2-Женщина >_");
+                    System.out.print("Введите пол: 1-Мужской, 2-Женский >_");
                     String newSex = scanner.nextLine();
-                    if (newSex.equals("1")) {
+                    if (newSex.isBlank()) {
+                        contact.setSex(Sex.ZERO);
+                        break;
+                    }
+                    else if (newSex.equals("1")) {
                         contact.setSex(Sex.MALE);
                         break;
                     }
@@ -252,7 +254,7 @@ public class Contact {
         if (lastname != null) {
             if (!lastname.isBlank()) info += " " + lastname;
         }
-        if (sex != null) info += " (" + sex.getSex() + ")";
+        if (sex != null && sex != Sex.ZERO) info += " (" + sex.getSex() + ")";
         info += ", номер: " + phoneNumber;
         if (type != null) info += " (" + type.getType() + ")";
         if (birthday != null && birthday.getYear() != 0) info += ", ДР: " + birthday.getDayOfMonth() + "." + birthday.getMonthValue() + "." + birthday.getYear()
