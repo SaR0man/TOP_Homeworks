@@ -218,8 +218,6 @@ public class Contact {
 
             }
             else if (addAction.equals("2")) {
-//                contact.setType(Type.MOBILE);
-//                contact.setBirthday(LocalDate.of(0,1,1));
                 break;
             }
             else

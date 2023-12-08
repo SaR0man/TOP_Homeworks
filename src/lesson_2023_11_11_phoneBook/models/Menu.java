@@ -82,7 +82,23 @@ public class Menu {
             }
 
             else if (action.equals("6")) {
-                System.out.println("_ здесь будет поиск");
+                Scanner scanner_6 = new Scanner(System.in);
+                String action_6;
+                while (true) {
+                    System.out.print("1 - Найти; 2 - Отобразить >_");
+                    action_6 = scanner_6.nextLine();
+
+                    if (action_6.equals("1")) {
+                        System.out.println("Поиск по имени, отчеству, фамилии или номеру телефона.");
+                        System.out.print("Введите поисковый запрос, используя подстановочные знаки \'_\' или \'*\' или без них >_");
+                        String sample = scanner_6.nextLine();
+                        phoneBook.findMask(sample);
+                        break;
+                    }
+
+                    else
+                        System.out.println(">> некорректный ввод!");
+                }
             }
 
             else if (action.equals("9")) {
@@ -97,5 +113,6 @@ public class Menu {
     }
 
 }
+
 
 
