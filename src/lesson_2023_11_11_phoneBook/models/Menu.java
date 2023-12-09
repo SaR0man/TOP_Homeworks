@@ -85,14 +85,19 @@ public class Menu {
                 Scanner scanner_6 = new Scanner(System.in);
                 String action_6;
                 while (true) {
-                    System.out.print("1 - Найти; 2 - Отобразить >_");
+                    System.out.print("1 - Найти; 2 - Отфильтровать >_");
                     action_6 = scanner_6.nextLine();
 
                     if (action_6.equals("1")) {
-                        System.out.println("Поиск по имени, отчеству, фамилии или номеру телефона.");
+                        System.out.println("===== Поиск по имени, отчеству, фамилии или номеру телефона =====");
                         System.out.print("Введите поисковый запрос, используя подстановочные знаки \'_\' или \'*\' или без них >_");
                         String sample = scanner_6.nextLine();
                         phoneBook.findMask(sample);
+                        break;
+                    }
+
+                    if (action_6.equals("2")) {
+                        System.out.println("_ здесь будет вывод по фильтру");
                         break;
                     }
 

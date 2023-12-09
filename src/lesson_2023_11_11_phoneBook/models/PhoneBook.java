@@ -211,7 +211,7 @@ public class PhoneBook {
 
     //// разводящий по поиску по маске
     public void findMask(String sample) {
-        System.out.println("_ работает метод phoneBook.findMask:");
+//        System.out.println("_ работает метод phoneBook.findMask:");  // ОТЛАДОЧНОЕ
         sample = sample.toLowerCase();
 
         if (sample.contains("_"))  // если в запросе присутствует "_"
@@ -220,12 +220,16 @@ public class PhoneBook {
         else if (sample.contains("*"))  // если в запросе присутствует "*"
             findStar(sample);
 
-        else findSample(sample);  // если подстановочные знаки отсутствуют
+        else if (!sample.isBlank())
+            findSample(sample);  // если подстановочные знаки отсутствуют
+
+        else
+            System.out.println(">> уточните запрос!");
     }
 
     //// поиск контакта по запросу без подстановочных символов
     public void findSample(String sample) {
-        System.out.println("_ работает поиск по запросу без подстановочных символов:");
+        System.out.println("----- Записи, содержащие \'" + sample + "\' -----");
         phoneBook.stream().filter(o -> o.getFirstName().toLowerCase().contains(sample)).forEach(System.out::println);
         phoneBook.stream().filter(o -> o.getPatronymic().toLowerCase().contains(sample)).forEach(System.out::println);
         phoneBook.stream().filter(o -> o.getLastname().toLowerCase().contains(sample)).forEach(System.out::println);
@@ -234,90 +238,74 @@ public class PhoneBook {
 
     //// поиск контакта по запросу с символом '_'
     public void findUnderscore(String sample) {
-        System.out.println("_ работает поиск по запросу с символом '_':");
-        String workString;
+        System.out.println("----- Записи, соответствующие формату \'" + sample + "\' -----");
+        boolean flag = false;
 
         for (int x = 0; x < phoneBook.size(); x++) {
-            workString = phoneBook.get(x).getFirstName().toLowerCase();
-            System.out.println(workString);  // ОТЛАДОЧНОЕ
-            if (workString.length() == sample.length()) {
-                System.out.println("_ начинаем работать со словом " + workString);
-                for (int i = 0, j = 0; i < workString.length(); i++) {
-                    System.out.println("_ берем у образца букву " + sample.charAt(i));
-                    if (sample.charAt(j) == '_' || sample.charAt(j) == workString.charAt(i)) {
-                        System.out.println("_ " + sample.charAt(j) + " сравниваем с " + workString.charAt(i));
-                        j++;
-                        if (i == workString.length() - 1) {
-                            System.out.println("_ найдено совпадение!");
-                            System.out.println(phoneBook.get(x).toString());
+            String[] elements = {phoneBook.get(x).getFirstName().toLowerCase(),  // Писк по Ф.И.О. и номеру телефона
+                    phoneBook.get(x).getLastname().toLowerCase(),
+                    phoneBook.get(x).getPatronymic().toLowerCase(),
+                    phoneBook.get(x).getPhoneNumber().toLowerCase()};
+            for (String workString : elements) {
+                if (workString.length() == sample.length()) {
+                    for (int i = 0, j = 0; i < workString.length(); i++) {
+                        if (sample.charAt(j) == '_' || sample.charAt(j) == workString.charAt(i)) {
+                            j++;
+                            if (i == workString.length() - 1) {
+                                System.out.println(phoneBook.get(x).toString());
+                                flag = true;
+                            }
                         }
                     }
                 }
             }
         }
-
-        for (int x = 0; x < phoneBook.size(); x++) {
-            workString = phoneBook.get(x).getLastname().toLowerCase();
-            System.out.println(workString);  // ОТЛАДОЧНОЕ
-            if (workString.length() == sample.length()) {
-                System.out.println("_ начинаем работать со словом " + workString);
-                for (int i = 0, j = 0; i < workString.length(); i++) {
-                    System.out.println("_ берем у образца букву " + sample.charAt(i));
-                    if (sample.charAt(j) == '_' || sample.charAt(j) == workString.charAt(i)) {
-                        System.out.println("_ " + sample.charAt(j) + " сравниваем с " + workString.charAt(i));
-                        j++;
-                        if (i == workString.length() - 1) {
-                            System.out.println("_ найдено совпадение!");
-                            System.out.println(phoneBook.get(x).toString());
-                        }
-                    }
-                }
-            }
-        }
-
-        for (int x = 0; x < phoneBook.size(); x++) {
-            workString = phoneBook.get(x).getPatronymic().toLowerCase();
-            System.out.println(workString);  // ОТЛАДОЧНОЕ
-            if (workString.length() == sample.length()) {
-                System.out.println("_ начинаем работать со словом " + workString);
-                for (int i = 0, j = 0; i < workString.length(); i++) {
-                    System.out.println("_ берем у образца букву " + sample.charAt(i));
-                    if (sample.charAt(j) == '_' || sample.charAt(j) == workString.charAt(i)) {
-                        System.out.println("_ " + sample.charAt(j) + " сравниваем с " + workString.charAt(i));
-                        j++;
-                        if (i == workString.length() - 1) {
-                            System.out.println("_ найдено совпадение!");
-                            System.out.println(phoneBook.get(x).toString());
-                        }
-                    }
-                }
-            }
-        }
-
-        for (int x = 0; x < phoneBook.size(); x++) {
-            workString = phoneBook.get(x).getPhoneNumber().toLowerCase();
-            System.out.println(workString);  // ОТЛАДОЧНОЕ
-            if (workString.length() == sample.length()) {
-                System.out.println("_ начинаем работать со словом " + workString);
-                for (int i = 0, j = 0; i < workString.length(); i++) {
-                    System.out.println("_ берем у образца букву " + sample.charAt(i));
-                    if (sample.charAt(j) == '_' || sample.charAt(j) == workString.charAt(i)) {
-                        System.out.println("_ " + sample.charAt(j) + " сравниваем с " + workString.charAt(i));
-                        j++;
-                        if (i == workString.length() - 1) {
-                            System.out.println("_ найдено совпадение!");
-                            System.out.println(phoneBook.get(x).toString());
-                        }
-                    }
-                }
-            }
-        }
-
+        if (!flag)
+            System.out.println(">> записи не найдены!");
     }
 
     //// поиск контакта по запросу с символом '*'
     public void findStar(String sample) {
-        System.out.println("_ работает поиск по запросу с символом '*':");
+        System.out.println("----- Записи, соответствующие формату \'" + sample + "\' -----");
+//        String workString;
+
+        List<String> workList = new ArrayList<>();  // создаем коллекцию с частями слова-образца между *
+        String[] tempList = sample.split("[*]");
+        for (String s : tempList) {
+            workList.add(s);
+        }
+        System.out.println(workList.stream().collect(toList()));  // ОТЛАДОЧНОЕ
+
+        for (int x = 0; x < phoneBook.size(); x++) {
+            String[] elements = {phoneBook.get(x).getFirstName().toLowerCase(),  // Писк по Ф.И.О. и номеру телефона
+                    phoneBook.get(x).getLastname().toLowerCase(),
+                    phoneBook.get(x).getPatronymic().toLowerCase(),
+                    phoneBook.get(x).getPhoneNumber().toLowerCase()};
+            for (String workString : elements) {
+
+                if (sample.equals("*")) {  // если поисковый запрос - одна звездочка
+                    System.out.println(phoneBook.get(x).toString());
+                }
+                else {
+                    for (int j = 0, i = 0; j < workList.size(); i++, j++) {  // i - индекс в слове, j - индекс части запроса
+                        String piece = workList.get(j);  // сокращение для упрощения
+                        if (workString.indexOf(workList.get(j), i) >= i) {  // если piece имеется в workString TODO если первая буква -- не звездочка?
+                            int k = workString.indexOf(workList.get(j), i);  // k - индекс word, где начинается очередная часть запроса
+                            i = k + piece.length();  // сдвигаем поиск в слове на длину части запроса
+                            if (j == workList.size() - 1 && !sample.endsWith("*") && workString.endsWith(piece)) {
+                                System.out.println(phoneBook.get(x).toString());
+                            }
+                            else if (j == workList.size() - 1 && sample.endsWith("*") && !workString.endsWith(workList.get(j))) {
+                                System.out.println(phoneBook.get(x).toString());
+                            }
+                        }
+                        else break;
+                    }
+                }
+            }
+
+        }
+
     }
 
     //// ввод тестовой телефонной книги
