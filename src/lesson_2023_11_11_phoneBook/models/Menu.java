@@ -74,10 +74,10 @@ public class Menu {
             }
 
             else if (action.equals("5")) {
-                Scanner scanner1 = new Scanner(System.in);
+                Scanner scanner_5 = new Scanner(System.in);
                 phoneBook.readByID();
                 System.out.print("Введите id контакта для редактирования: >_");
-                int editById = scanner1.nextInt();
+                int editById = scanner_5.nextInt();
                 phoneBook.editing(editById);
             }
 
@@ -97,7 +97,10 @@ public class Menu {
                     }
 
                     if (action_6.equals("2")) {
-                        System.out.println("_ здесь будет вывод по фильтру");
+                        System.out.println("Отобразить контакты, имеющие признак:");
+                        System.out.print("пола: 1 муж.; 2 жен. | типа номера: 3 моб.; 4 раб.; 5 дом.; 6 факс >_");
+                        String choice = scanner_6.nextLine();
+                        phoneBook.filter(choice);
                         break;
                     }
 
@@ -118,6 +121,3 @@ public class Menu {
     }
 
 }
-
-
-

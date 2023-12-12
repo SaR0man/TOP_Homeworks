@@ -267,45 +267,77 @@ public class PhoneBook {
     //// поиск контакта по запросу с символом '*'
     public void findStar(String sample) {
         System.out.println("----- Записи, соответствующие формату \'" + sample + "\' -----");
-//        String workString;
 
         List<String> workList = new ArrayList<>();  // создаем коллекцию с частями слова-образца между *
         String[] tempList = sample.split("[*]");
         for (String s : tempList) {
             workList.add(s);
         }
-        System.out.println(workList.stream().collect(toList()));  // ОТЛАДОЧНОЕ
+//        System.out.println(workList.stream().collect(toList()));  // ОТЛАДОЧНОЕ
 
         for (int x = 0; x < phoneBook.size(); x++) {
             String[] elements = {phoneBook.get(x).getFirstName().toLowerCase(),  // Писк по Ф.И.О. и номеру телефона
                     phoneBook.get(x).getLastname().toLowerCase(),
                     phoneBook.get(x).getPatronymic().toLowerCase(),
                     phoneBook.get(x).getPhoneNumber().toLowerCase()};
-            for (String workString : elements) {
 
-                if (sample.equals("*")) {  // если поисковый запрос - одна звездочка
+            boolean output = false;  // признак вывода в консоль контакта
+
+            for (String workString : elements) {  // проходимся отдельно по имени, отчеству, фамилии и номеру телефона
+
+                if (sample.equals("*")) {  // если поисковый запрос - только одна звездочка
                     System.out.println(phoneBook.get(x).toString());
                 }
+
                 else {
-                    for (int j = 0, i = 0; j < workList.size(); i++, j++) {  // i - индекс в слове, j - индекс части запроса
-                        String piece = workList.get(j);  // сокращение для упрощения
-                        if (workString.indexOf(workList.get(j), i) >= i) {  // если piece имеется в workString TODO если первая буква -- не звездочка?
-                            int k = workString.indexOf(workList.get(j), i);  // k - индекс word, где начинается очередная часть запроса
-                            i = k + piece.length();  // сдвигаем поиск в слове на длину части запроса
-                            if (j == workList.size() - 1 && !sample.endsWith("*") && workString.endsWith(piece)) {
-                                System.out.println(phoneBook.get(x).toString());
+                    int k = 0; // индекс в слове, с которого начинается поиск очередного фрагмента
+                    for (int y = 0; y < workList.size(); y++) {  // перебираем фрагменты
+                        String part = workList.get(y);
+//                        System.out.println("- берем фрагмент \'" + part + "\'");  // ОТЛАДОЧНОЕ
+
+                        /*
+                         если запрос начинается с '*' и workString содержит фрагмент
+                         ИЛИ запрос не начинается с '*' и workString начинается с первого фрагмента в коллекции фрагментов:
+                         */
+                        if ((sample.startsWith("*") && workString.contains(part)) || (!sample.startsWith("*") && workString.startsWith(workList.get(0)))) {
+//                            System.out.print("_ в слове \'" + workString + "\' найден фрагмент \'" + part + "\'");  // ОТЛАДОЧНОЕ
+
+                            boolean flag = false;
+                            for (int i = k; i < workString.length(); i++) {  // ищем с какого именно индекса начинается фрагмент (i - индекс букв в слове workString)
+
+
+                                if (!sample.endsWith("*") && workString.regionMatches(i, part, 0, part.length()) && i == workString.length() - part.length()) {
+                                    flag = true;
+                                }
+                                else if (workString.regionMatches(i, part, 0, part.length()) && sample.endsWith("*")) {
+//                                    System.out.println(" по индексу " + i);  // ОТЛАДОЧНОЕ
+                                    k = i + part.length();
+                                    flag = true;
+                                    break;
+                                }
                             }
-                            else if (j == workList.size() - 1 && sample.endsWith("*") && !workString.endsWith(workList.get(j))) {
+                            if (y == workList.size() - 1 && flag == true) {  // если фрагмент имеется в слове, и он последний, и флаг сработал
                                 System.out.println(phoneBook.get(x).toString());
+                                output = true;
+                                break;
                             }
                         }
-                        else break;
+                        else {
+//                            System.out.println("_ в слове \'" + workString + "\' не найдено \'" + part + "\'");  // ОТЛАДОЧНОЕ
+                            break;
+                        }
                     }
+//                    System.out.println(">> соответствий не найдено!");
                 }
+                if (output) break;  // если контакт уже выведен, поиск по нему прерываем
             }
-
         }
+    }
 
+    //// фильтр
+    public void filter(String choice) {
+        System.out.println("----- вывод по фильтру -----");
+        System.out.println("_ производятся работы :-)");
     }
 
     //// ввод тестовой телефонной книги
