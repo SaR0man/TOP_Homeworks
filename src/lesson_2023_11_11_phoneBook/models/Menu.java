@@ -1,5 +1,7 @@
 package lesson_2023_11_11_phoneBook.models;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Menu {
@@ -100,8 +102,19 @@ public class Menu {
                         System.out.println("Отобразить контакты, имеющие признак:");
                         System.out.print("пола: 1 муж.; 2 жен. | типа номера: 3 моб.; 4 раб.; 5 дом.; 6 факс >_");
                         String choice = scanner_6.nextLine();
-                        phoneBook.filter(choice);
-                        break;
+                        ArrayList<String> choices = new ArrayList<>();
+                        choices.add("1");
+                        choices.add("2");
+                        choices.add("3");
+                        choices.add("4");
+                        choices.add("5");
+                        choices.add("6");
+
+                        if (choices.contains(choice)) {
+                            phoneBook.filter(choice);
+                            break;
+                        }
+                        else System.out.println(">> некорректный ввод!");
                     }
 
                     else

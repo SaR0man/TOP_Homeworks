@@ -268,6 +268,7 @@ public class PhoneBook {
     public void findStar(String sample) {
         System.out.println("----- Записи, соответствующие формату \'" + sample + "\' -----");
 
+
         List<String> workList = new ArrayList<>();  // создаем коллекцию с частями слова-образца между *
         String[] tempList = sample.split("[*]");
         for (String s : tempList) {
@@ -281,14 +282,15 @@ public class PhoneBook {
                     phoneBook.get(x).getPatronymic().toLowerCase(),
                     phoneBook.get(x).getPhoneNumber().toLowerCase()};
 
+            if (sample.equals("*")) {  // если поисковый запрос - только одна звездочка
+                System.out.println(phoneBook.get(x).toString());
+            }
+
             boolean output = false;  // признак вывода в консоль контакта
 
             for (String workString : elements) {  // проходимся отдельно по имени, отчеству, фамилии и номеру телефона
 
-                if (sample.equals("*")) {  // если поисковый запрос - только одна звездочка
-                    System.out.println(phoneBook.get(x).toString());
-                }
-
+                if (sample.equals("*")) {}
                 else {
                     int k = 0; // индекс в слове, с которого начинается поиск очередного фрагмента
                     for (int y = 0; y < workList.size(); y++) {  // перебираем фрагменты
@@ -336,8 +338,48 @@ public class PhoneBook {
 
     //// фильтр
     public void filter(String choice) {
-        System.out.println("----- вывод по фильтру -----");
-        System.out.println("_ производятся работы :-)");
+        if (choice.equals("1")) {
+            System.out.println("----- вывод по фильтру 'муж.' -----");
+            List<Contact> result = phoneBook.stream().filter(contact -> contact.getSex() == Sex.MALE).collect(Collectors.toList());
+            result.forEach(contact -> {
+                System.out.println(contact.toString());
+            });
+        }
+        else if (choice.equals("2")) {
+            System.out.println("----- вывод по фильтру 'жен.' -----");
+            List<Contact> result = phoneBook.stream().filter(contact -> contact.getSex() == Sex.FEMALE).collect(Collectors.toList());
+            result.forEach(contact -> {
+                System.out.println(contact.toString());
+            });
+        }
+        else if (choice.equals("3")) {
+            System.out.println("----- вывод по фильтру 'моб.' -----");
+            List<Contact> result = phoneBook.stream().filter(contact -> contact.getType() == Type.MOBILE).collect(Collectors.toList());
+            result.forEach(contact -> {
+                System.out.println(contact.toString());
+            });
+        }
+        else if (choice.equals("4")) {
+            System.out.println("----- вывод по фильтру 'раб.' -----");
+            List<Contact> result = phoneBook.stream().filter(contact -> contact.getType() == Type.WORK).collect(Collectors.toList());
+            result.forEach(contact -> {
+                System.out.println(contact.toString());
+            });
+        }
+        else if (choice.equals("5")) {
+            System.out.println("----- вывод по фильтру 'дом.' -----");
+            List<Contact> result = phoneBook.stream().filter(contact -> contact.getType() == Type.HOME).collect(Collectors.toList());
+            result.forEach(contact -> {
+                System.out.println(contact.toString());
+            });
+        }
+        else if (choice.equals("6")) {
+            System.out.println("----- вывод по фильтру 'факс' -----");
+            List<Contact> result = phoneBook.stream().filter(contact -> contact.getType() == Type.FAX).collect(Collectors.toList());
+            result.forEach(contact -> {
+                System.out.println(contact.toString());
+            });
+        }
     }
 
     //// ввод тестовой телефонной книги
